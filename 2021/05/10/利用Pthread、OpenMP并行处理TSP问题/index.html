@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives | Hexo</title>
+  <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="Description TSP问题（任选一个数据集）大规模输入文件为tsp.txt，每一行为每个城市的坐标小规模输入文件为tsp2.txt，文件内是城市之间的距离矩阵补充说明：可以自行调整数据规模，例如删减至10个城市，提交时需要将输入文件也一起打包输出文件为经过城市的顺序（从0开始编号）  Solution0.问题再现 假设有一个旅行商要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/index.html">
+<meta property="og:url" content="http://example.com/2021/05/10/%E5%88%A9%E7%94%A8Pthread%E3%80%81OpenMP%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86TSP%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Description TSP问题（任选一个数据集）大规模输入文件为tsp.txt，每一行为每个城市的坐标小规模输入文件为tsp2.txt，文件内是城市之间的距离矩阵补充说明：可以自行调整数据规模，例如删减至10个城市，提交时需要将输入文件也一起打包输出文件为经过城市的顺序（从0开始编号）  Solution0.问题再现 假设有一个旅行商要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-05-10T05:52:32.267Z">
+<meta property="article:modified_time" content="2021-05-10T05:52:57.567Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -150,107 +154,374 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-利用Pthread、OpenMP并行处理TSP问题" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+    <div class="article-entry" itemprop="articleBody">
       
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/05/10/%E5%88%A9%E7%94%A8Pthread%E3%80%81OpenMP%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86TSP%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2021-05-10T05:52:32.267Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-10</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
+        <h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><blockquote>
+<h4 id="TSP问题（任选一个数据集）"><a href="#TSP问题（任选一个数据集）" class="headerlink" title="TSP问题（任选一个数据集）"></a>TSP问题（任选一个数据集）</h4><p>大规模输入文件为tsp.txt，每一行为每个城市的坐标<br>小规模输入文件为tsp2.txt，文件内是城市之间的距离矩阵<br>补充说明：可以自行调整数据规模，例如删减至10个城市，提交时需要将输入文件也一起打包<br>输出文件为经过城市的顺序（从0开始编号）</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><h4 id="0-问题再现"><a href="#0-问题再现" class="headerlink" title="0.问题再现"></a>0.问题再现</h4><blockquote>
+<p>假设有一个旅行商要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市只能拜访一次，而且最后要回到原来出发的城市。路径的选择目标是要求得的路径路程为所有路径之中的最小值。</p>
+</blockquote>
+<h4 id="1-算法选择"><a href="#1-算法选择" class="headerlink" title="1. 算法选择"></a>1. 算法选择</h4><ul>
+<li><p>TSP问题是个NP完全问题，其求解算法主要包括：</p>
+<ol>
+<li>DFS、BFS穷举搜索树，时间复杂度为$O(n!)$</li>
+<li>状压DP，时间复杂度为$O(2^{n}n^{2})$</li>
+<li>一些随机的、启发式的搜索算法，比如遗传算法、蚁群算法、模拟退火算法、粒子群算法等，能把时间复杂度优化到一个多项式时间</li>
+</ol>
+</li>
+<li><p>课本上的方法即用DFS穷举搜索树，这种方法十分好写，而且课本已经给出了并行方案，所以一开始我也是采用此种方法的。</p>
+<p>然而，此种算法时间复杂度实在太高了，不剪枝的话，即使是跑老师给的小数据集，<code>17!</code>仍然是一个天文数字（$17! = 3.5e14 = 3e6秒 = 34天$），并行了也好不到哪里去。</p>
+<p>然后就尝试了各种剪枝，如剪去已经大于当前最小值的枝等，优化完也仍然较慢，用<code>OpenMP</code>四线程跑小数据集十几分钟跑了百分之三十。这样子并行优化还不如算法优化，因此放弃了暴搜+剪枝的方案</p>
+</li>
+<li><p>然后考虑模拟退火等启发式算法，首先这些算法对我来说实现起来还是比较麻烦的，而且也暂时想不到什么好方法并行。关键是这些启发式算法还有个最大缺点，就是只能求近似最优解，不能保证一定能求出最优解，所以也放弃了这种方法。</p>
+</li>
+<li><p>因此，最后采用了状压DP的方法，时间复杂度为$O(2^{n}n^{2})$，跑个规模17的数据集还是很快的$2^{17}*17^{2}=37 879 808$，串行理论时间复杂度不到一秒，虽然规模48那个数据集跑起来还是要几天几夜（那个数据集要跑感觉只能用遗传算法求近似最优解了）。</p>
+</li>
+</ul>
+<h4 id="2-串行算法思路及实现"><a href="#2-串行算法思路及实现" class="headerlink" title="2. 串行算法思路及实现"></a>2. 串行算法思路及实现</h4><ul>
+<li><p>状压DP，即状态压缩动态规划，是利用计算机二进制的性质来描述状态的一种DP方式。 要实现算法，一是要找好状态转移方程，二是要用二进制描述好每个状态。</p>
+</li>
+<li><p>推导状态转移方程：</p>
+<p>假设从顶点s出发，令dp(i, State)表示从顶点i出发经过State(是一个点的集合)中各个顶点一次且仅一次，最后回到出发点s的最短路径长度。现在开始推导其状态转移方程：</p>
+<ol>
+<li>当V为空集，那么$dp(i,State)$，表示直接从i回到s了，此时$dp(i,State)=c_{is}(i \neq s)$</li>
+<li>如果State不为空，那么就是对子问题的最优求解。必须在State这个城市集合中，尝试每一个，并求出最优解。$$ dp(i,State)=min(C_{ik}+dp(k,State-(k)))$$</li>
+</ol>
+<p>以上即为算法的状态转移方程。另外，不难发现最终路径是个环，所以不论出发点定在哪里，结果都是一样的。所以为了简化过程，不妨假设起点都为0号城市。</p>
+</li>
+<li><p>利用二进制描述状态：</p>
+<p>考虑dp数组的第二维State，其含义是经过城市编号的点集，则自然想到若有N个城市，能用一个N-1位二进制数来表示每种状态（无需考虑出发点），该二进制数的第n位是否为1表示第n个城市是否在集合中。例如，对于N=4，集合{1,3}可表示为二进制数101，对应十进制数即为3，因此，第二维可用一个$2^{n-1}$规模的十进制数表示。根据二进制位运算，可以定义以下操作：</p>
+<ul>
+<li>对于第y个城市，他的二进制表达为，1&lt;&lt;(y-1)；</li>
+<li>对于数字x，要看它的第i位是不是1，那么可以通过判断布尔表达式 (((x &gt;&gt; (i - 1) ) &amp; 1) == 1的真值来实现；</li>
+<li>由动态规划公式可知，需要从集合中剔除元素。假如集合用索引x表示，要剔除元素标号为i,我们异或运算实现减法，其运算表示为： x = x ^ (1&lt;&lt;(i - 1))。</li>
+</ul>
+</li>
+<li><p>数据结构、全局变量定义：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 17            <span class="comment">// 城市数量</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 1 &lt;&lt; 30  <span class="comment">// 定义最大值， 用于tsp更新dp数组</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 用于计算时刻</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GET_TIME(now)                           \</span></span><br><span class="line">    &#123;                                           \</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">t</span>;</span>                       \</span><br><span class="line">        gettimeofday(&amp;t, <span class="literal">NULL</span>);                 \</span><br><span class="line">        now = t.tv_sec + t.tv_usec / <span class="number">1000000.0</span>; \</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> M = <span class="number">1</span> &lt;&lt; (N - <span class="number">1</span>);  <span class="comment">// 状态数 M = 2^(n-1)</span></span><br><span class="line"><span class="keyword">int</span> g[N][N];                 <span class="comment">// 存原始图</span></span><br><span class="line"><span class="keyword">int</span> dp[N][M];  <span class="comment">// dp数组，dp[point][state]表示从point出发经过state中各个点一次且仅一次，最后回到出发点的最短路径长度</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; path;  <span class="comment">// 路径数组，用于打印路径</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>求解TSP函数主体：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 串行版本的tsp求解函数，用状压dp实现，理论复杂度为O((2^n)*(n^2))，由于路径是一个环，设出发点为0号城市</span></span><br><span class="line"><span class="comment"> * @param void</span></span><br><span class="line"><span class="comment"> * @return void</span></span><br><span class="line"><span class="comment"> * @author 黄海宇</span></span><br><span class="line"><span class="comment"> * @date 2021/5/3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Serial_TSP</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 初始化，不经过任何点的dp数组状态置为g[i][0]，即该点到出发点0号城市之间的距离</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">        dp[i][<span class="number">0</span>] = g[i][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 进入状态处理循环，第一层for，遍历状态维，即经过城市集合</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; M; j++) &#123;</span><br><span class="line">        <span class="comment">// 第二层for，遍历当前城市</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">            <span class="comment">// 初始化当前状态最小路径长度为inf</span></span><br><span class="line">            dp[i][j] = INF;</span><br><span class="line">            <span class="comment">// 如果要经过路径上的城市包括当前城市，违规，进入下一次循环</span></span><br><span class="line">            <span class="keyword">if</span> (((j &gt;&gt; (i - <span class="number">1</span>)) &amp; <span class="number">1</span>) == <span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 遍历转移自哪个状态，取min&#123;c_ik+d(k,V-&#123;k&#125;)&#125;；</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">1</span>; k &lt; N; k++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (((j &gt;&gt; (k - <span class="number">1</span>)) &amp; <span class="number">1</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (dp[i][j] &gt; g[i][k] + dp[k][j ^ (<span class="number">1</span> &lt;&lt; (k - <span class="number">1</span>))]) &#123;</span><br><span class="line">                    <span class="comment">// 状态转移</span></span><br><span class="line">                    dp[i][j] = g[i][k] + dp[k][j ^ (<span class="number">1</span> &lt;&lt; (k - <span class="number">1</span>))];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+
+
+</li>
+</ul>
+<ul>
+<li><p>根据dp结果找到路径并将其打印</p>
+<p>可以用dp数组来反向推出其路径。其算法思想如下：</p>
+<p>比如在第一步时，我们就知道那个值最小，因为dp[][]数组我们已经计算出来了，由计算可知$C_{01}+d(1,{2,3,4})$最小，所以一开始从起始点0出发，经过1。接下来同样计算d(1,{2,3,4})，由计算可知$C_{14}+d(4,{2,3})$所以0—&gt;1—-&gt;4，接下来同理求d(4,{2,3})，以此类推，最终反向推出整条路径。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 用于判断是否所有城市都已经被访问过了</span></span><br><span class="line"><span class="comment"> * @param visited   传入访问记录数组</span></span><br><span class="line"><span class="comment"> * @return 所有城市都已经被访问过了，则返回1，否则返回0</span></span><br><span class="line"><span class="comment"> * @author 黄海宇</span></span><br><span class="line"><span class="comment"> * @date 2021/5/3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isVisited</span><span class="params">(<span class="keyword">bool</span> visited[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; N; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (visited[i] == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 用于根据dp结果找到最短路径并将其输出</span></span><br><span class="line"><span class="comment"> * @param void</span></span><br><span class="line"><span class="comment"> * @return void</span></span><br><span class="line"><span class="comment"> * @author 黄海宇</span></span><br><span class="line"><span class="comment"> * @date 2021/5/3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FindAndPrintPath</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> visited[N] = &#123;<span class="literal">false</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> par = <span class="number">0</span>, min = INF, S = M - <span class="number">1</span>, temp;</span><br><span class="line">    path.push_back(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (!isVisited(visited)) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; N; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (visited[i] == <span class="literal">false</span> &amp;&amp; (S &amp; (<span class="number">1</span> &lt;&lt; (i - <span class="number">1</span>))) != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (min &gt; g[i][par] + dp[i][(S ^ (<span class="number">1</span> &lt;&lt; (i - <span class="number">1</span>)))]) &#123;</span><br><span class="line">                    min = g[i][par] + dp[i][(S ^ (<span class="number">1</span> &lt;&lt; (i - <span class="number">1</span>)))];</span><br><span class="line">                    temp = i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        par = temp;</span><br><span class="line">        path.push_back(par);</span><br><span class="line">        visited[par] = <span class="literal">true</span>;</span><br><span class="line">        S = S ^ (<span class="number">1</span> &lt;&lt; (par - <span class="number">1</span>));</span><br><span class="line">        min = INF;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;The path is: &quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> val:path) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; val &lt;&lt; <span class="string">&quot; -&gt; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p><code>init</code>函数用于接收输入邻接矩阵并转存到二维数组g中</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 初始化函数，用于接受输入的邻接矩阵并将其存入g中</span></span><br><span class="line"><span class="comment"> * @param void</span></span><br><span class="line"><span class="comment"> * @return void</span></span><br><span class="line"><span class="comment"> * @author 黄海宇</span></span><br><span class="line"><span class="comment"> * @date 2021/5/3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; N; ++j) &#123;</span><br><span class="line">            <span class="built_in">cin</span> &gt;&gt; g[i][j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+</li>
+</ul>
+<h4 id="3-使用OpenMP的并行算法思路及实现"><a href="#3-使用OpenMP的并行算法思路及实现" class="headerlink" title="3. 使用OpenMP的并行算法思路及实现"></a>3. 使用OpenMP的并行算法思路及实现</h4><ul>
+<li><p>要实现并行化，首先要找到可并行化的部分，该部分要求一是不能有数据依赖，二是并行工作量不能太少，否则切换进程的时间还不如串行，可以看到串行版本的TSP函数主体求解时嵌套了三个for，那最好当然是并行最外层循环，然而，最外层循环用来遍历dp数组的状态维，存在数据依赖，不能直接拆分并行。因此，考虑对这层for进行分类，去除数据依赖。考虑State的意义，它是每个状态经过中间点的集合，可对集合中点的个数进行分类，可以证明，集合中元素相等的一类状态不会互相影响，一个状态只依赖于点集中点的数量减一的状态集。因此，可先以此对外层循环分类，分类后的每一类状态便可以用来并行了。</p>
+<p>因此下面关注两个点，一是对状态进行分类，二是利用<code>OpenMP</code>具体实现并行</p>
+</li>
+<li><p>对状态进行分类：</p>
+<p>点集中的点的个数，其实就是二进制数中1的个数，因此写一个小接口，用来计算N-1位二进制数中有n个1的所有数即可。将此接口设计为内联函数，以加快运行速度。</p>
+<p>用到的全局变量：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> b[M];  <span class="comment">// 存放相同城市数的state集合的十进制表示（仅在两个多线程版本用到）</span></span><br></pre></td></tr></table></figure>
+
+<p>接口代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 找到所有N位二进制数里面有n个1对应的十进制数，并存到b数组中，设置为inline函数，加快运行时速度</span></span><br><span class="line"><span class="comment"> * @param n    所求二进制数中1的个数</span></span><br><span class="line"><span class="comment"> * @return 返回b数组有效长度</span></span><br><span class="line"><span class="comment"> * @author 黄海宇</span></span><br><span class="line"><span class="comment"> * @date 2021/5/3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">gather</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> first = <span class="number">1</span>; <span class="comment">// 特判第一次进入循环</span></span><br><span class="line">    <span class="keyword">int</span> r, c;</span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = (<span class="number">1U</span> &lt;&lt; n) - <span class="number">1</span>; first || r &lt; (<span class="number">1</span> &lt;&lt; (N - <span class="number">1</span>));) &#123;</span><br><span class="line">        b[cnt] = j; <span class="comment">// 将得到的每个数存入b数组</span></span><br><span class="line">        cnt++;</span><br><span class="line">        c = j &amp; -j;</span><br><span class="line">        r = j + c;</span><br><span class="line">        j = (((r ^ j) &gt;&gt; <span class="number">2</span>) / c) | r;</span><br><span class="line">        first = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cnt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>利用<code>OpenMP</code>实现并行：</p>
+<p><code>OpenMP</code>版本的并行实现十分简单，引入个头文件，在要并行的循环前加个<code>parallel for</code>即可，我的for里也没有要特殊处理的私有变量，因此处理起来十分简单。</p>
+<p><code>OpenMP</code>并行版本函数主体：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 使用openmp的并行版本的tsp求解函数，并行部分为state集合中定点数相同的dp数组状态的处理</span></span><br><span class="line"><span class="comment"> * @param void</span></span><br><span class="line"><span class="comment"> * @return void</span></span><br><span class="line"><span class="comment"> * @author 黄海宇</span></span><br><span class="line"><span class="comment"> * @date 2021/5/3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">openmp_parallel_TSP</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">        dp[i][<span class="number">0</span>] = g[i][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 对经过的城市集合进行分类，经过城市数量相同的归为同一类</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">1</span>; n &lt; N; n++) &#123;</span><br><span class="line">        <span class="comment">// 求出同类情况，并放入b数组中，b数组有效长度存入cnt</span></span><br><span class="line">        <span class="keyword">int</span> cnt = gather(n);</span><br><span class="line">        <span class="comment">// 同一类之间没有数据依赖，因此可以并行处理同一类类情况的状态</span></span><br><span class="line">        <span class="meta">#<span class="meta-keyword">pragma</span> omp parallel for num_threads(thread_count)</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; cnt; ++index) &#123;</span><br><span class="line">            <span class="keyword">int</span> j = b[index];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">                dp[i][j] = INF;</span><br><span class="line">                <span class="keyword">if</span> (((j &gt;&gt; (i - <span class="number">1</span>)) &amp; <span class="number">1</span>) == <span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">1</span>; k &lt; N; k++) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (((j &gt;&gt; (k - <span class="number">1</span>)) &amp; <span class="number">1</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (dp[i][j] &gt; g[i][k] + dp[k][j ^ (<span class="number">1</span> &lt;&lt; (k - <span class="number">1</span>))]) &#123;</span><br><span class="line">                        dp[i][j] = g[i][k] + dp[k][j ^ (<span class="number">1</span> &lt;&lt; (k - <span class="number">1</span>))];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>1</p>
+</li>
+<li><p>1</p>
+</li>
+</ul>
+<h4 id="4-使用Pthread的并行算法思路及实现"><a href="#4-使用Pthread的并行算法思路及实现" class="headerlink" title="4. 使用Pthread的并行算法思路及实现"></a>4. 使用Pthread的并行算法思路及实现</h4><ul>
+<li><p><code>Pthread</code>版本的并行思路与<code>OpenMP</code>版本相同，仍是考虑对外层for进行分类，将点集中元素个数相同的每一类状态进行并行处理。不过<code>Pthread</code>版本并行实现起来较为复杂，需要设计线程函数，并自己设计负载均衡策略。</p>
+</li>
+<li><p>用到的全局变量和数据结构：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> b[M];  <span class="comment">// 存放相同城市数的state集合的十进制表示（仅在两个多线程版本用到）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 该结构体用于存放向pthread的线程函数传入的多个参数</span></span><br><span class="line"><span class="comment"> * @author 黄海宇</span></span><br><span class="line"><span class="comment"> * @date 2021/5/3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">parameter</span> &#123;</span></span><br><span class="line">    <span class="keyword">void</span>* rank;  <span class="comment">// 线程号</span></span><br><span class="line">    <span class="keyword">int</span>* ar;     <span class="comment">// 待划分的数组</span></span><br><span class="line">    <span class="keyword">int</span> len;     <span class="comment">// 待划分的数组的长度</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>由于b数组一直在发生变化，要创建多次线程，因此线程函数的参数要传入不止一个，而<code>pthread_create()</code>函数用于传递线程函数参数的参数只有一个，因此考虑而外设计<code>parameter</code>结构体，用于将待传入参数进行打包。实际要传入的参数包括线程号、待划分的数组以及待划分的数组长度。</p>
+</li>
+<li><p>利用<code>Pthread</code>实现并行的函数主体：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 使用pthread的并行版本的tsp求解函数，并行部分为state集合中定点数相同的dp数组状态的处理</span></span><br><span class="line"><span class="comment"> * @param void</span></span><br><span class="line"><span class="comment"> * @return void</span></span><br><span class="line"><span class="comment"> * @author 黄海宇</span></span><br><span class="line"><span class="comment"> * @date 2021/5/3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_parallel_TSP</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">        dp[i][<span class="number">0</span>] = g[i][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 对经过的城市集合进行分类，经过城市数量相同的归为同一类</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">1</span>; n &lt; N; n++) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 求出同类情况，并放入b数组中，b数组有效长度存入cnt</span></span><br><span class="line">        <span class="keyword">int</span> cnt = gather(n);</span><br><span class="line">        <span class="comment">// 同一类之间没有数据依赖，因此可以并行处理同一类类情况的状态</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">long</span> thread; <span class="comment">// 线程号</span></span><br><span class="line">        <span class="keyword">pthread_t</span>* thread_handles; <span class="comment">// 线程指针</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 为线程指针申请内存</span></span><br><span class="line">        thread_handles = (<span class="keyword">pthread_t</span>*)<span class="built_in">malloc</span>(thread_count * <span class="keyword">sizeof</span>(<span class="keyword">pthread_t</span>));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 开启thread_count个线程，每个线程启用线程函数</span></span><br><span class="line">        <span class="keyword">for</span> (thread = <span class="number">0</span>; thread &lt; thread_count; thread++) &#123;</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">parameter</span>* <span class="title">par</span> =</span> <span class="keyword">new</span> parameter;</span><br><span class="line">            par-&gt;rank = (<span class="keyword">void</span>*)thread;</span><br><span class="line">            par-&gt;len = cnt;</span><br><span class="line">            par-&gt;ar = b;</span><br><span class="line">            pthread_create(&amp;thread_handles[thread], <span class="literal">NULL</span>, Thread_work,</span><br><span class="line">                           (<span class="keyword">void</span>*)par);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 同步线程</span></span><br><span class="line">        <span class="keyword">for</span> (thread = <span class="number">0</span>; thread &lt; thread_count; thread++)</span><br><span class="line">            pthread_join(thread_handles[thread], <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">free</span>(thread_handles);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>逻辑上，并行策略与<code>OpenMP</code>相同。实际上，函数主体主要包括以下工作：</p>
+<ol>
+<li>每次对状态进行分类；</li>
+<li>每次分类后开启<code>thread_count</code>个线程，所以一共需要开启<code>N*thread_count</code>次线程；</li>
+<li>对于开启的每个线程，先将待传入参数打包到一个<code>parameter</code>结构体中，再通过<code>pthread_create</code>调用线程函数；</li>
+<li>同步线程，释放之前申请的空间</li>
+</ol>
+</li>
+<li><p>线程函数工作：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief pthread的线程函数</span></span><br><span class="line"><span class="comment"> * @param arg 打包多个参数的参数结构体，包括线程号、待划分数组、待划分数组的长度</span></span><br><span class="line"><span class="comment"> * @return void*</span></span><br><span class="line"><span class="comment"> * @author 黄海宇</span></span><br><span class="line"><span class="comment"> * @date 2021/5/3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">Thread_work</span><span class="params">(<span class="keyword">void</span>* arg)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 解引用传入的参数结构体</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">parameter</span>* <span class="title">p</span> =</span> (parameter*)arg;</span><br><span class="line">    <span class="keyword">void</span>* rank = p-&gt;rank;</span><br><span class="line">    <span class="keyword">int</span>* ar = p-&gt;ar;</span><br><span class="line">    <span class="keyword">int</span> n = p-&gt;len;</span><br><span class="line">    <span class="built_in">free</span>(p);</span><br><span class="line">    <span class="keyword">long</span> my_rank = (<span class="keyword">long</span>)rank;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算各线程负责处理的数组区间的左右值，尽量负载均衡</span></span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> my_n = n / thread_count;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> res = n % thread_count;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> my_left;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> j;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (my_rank &lt; res) &#123;</span><br><span class="line">        my_n++;</span><br><span class="line">        my_left = my_n * my_rank;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        my_left = my_n * my_rank + res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> my_right = my_left + my_n;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 各线程处理各自负责部分的数组</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> index = my_left; index &lt; my_right; ++index) &#123;</span><br><span class="line">        j = ar[index];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">            dp[i][j] = INF;</span><br><span class="line">            <span class="keyword">if</span> (((j &gt;&gt; (i - <span class="number">1</span>)) &amp; <span class="number">1</span>) == <span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">1</span>; k &lt; N; k++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (((j &gt;&gt; (k - <span class="number">1</span>)) &amp; <span class="number">1</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (dp[i][j] &gt; g[i][k] + dp[k][j ^ (<span class="number">1</span> &lt;&lt; (k - <span class="number">1</span>))]) &#123;</span><br><span class="line">                    dp[i][j] = g[i][k] + dp[k][j ^ (<span class="number">1</span> &lt;&lt; (k - <span class="number">1</span>))];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>线程函数的主要工作有：</p>
+<ol>
+<li>解引用传入的<code>parameter</code>结构体，将其空间进行回收；</li>
+<li>计算本线程所负责区间的左右端点。为实现负载均衡，首先将总的待处理数组长度均分，再将所剩余数<code>res</code>分配到前<code>res</code>个线程中；</li>
+<li>各线程处理各自负责部分的数组。由于各线程更新dp数组的不同位置处，因此不存在共享变量导致的临界区问题，因此也不需加锁。</li>
+<li>最后返回<code>nullptr</code>，一开始没注意要有返回值导致开<code>-O2</code>编译参数时出现一些奇怪的问题。</li>
+</ol>
+</li>
+</ul>
+<h4 id="5-程序执行及运行结果显示"><a href="#5-程序执行及运行结果显示" class="headerlink" title="5. 程序执行及运行结果显示"></a>5. 程序执行及运行结果显示</h4><ul>
+<li><p>为便于比较，将三个版本的解法均写入同一个程序中。主函数实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 计时开始时刻和计时结束时刻</span></span><br><span class="line">    <span class="keyword">double</span> start, stop;</span><br><span class="line">    init();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 串行版本：</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;1. Serial Version:&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    GET_TIME(start);</span><br><span class="line">    Serial_TSP();</span><br><span class="line">    GET_TIME(stop);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;The minimal distance: &quot;</span> &lt;&lt; dp[<span class="number">0</span>][M - <span class="number">1</span>] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Serial run time: %e\n\n&quot;</span>, stop - start);</span><br><span class="line">    FindAndPrintPath();</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;---------------------------------&quot;</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 重置dp数组和path，不影响下个版本的工作</span></span><br><span class="line">    <span class="built_in">memset</span>(dp, <span class="number">0</span>, <span class="keyword">sizeof</span>(dp));</span><br><span class="line">    path.clear();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// OpenMP版本：</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;2. OpenMP Version:&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    GET_TIME(start);</span><br><span class="line">    openmp_parallel_TSP();</span><br><span class="line">    GET_TIME(stop);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;The minimal distance: &quot;</span> &lt;&lt; dp[<span class="number">0</span>][M - <span class="number">1</span>] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;parallel with openmp run time: %e\n\n&quot;</span>, stop - start);</span><br><span class="line">    FindAndPrintPath();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;---------------------------------&quot;</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 重置dp数组和path，不影响下个版本的工作</span></span><br><span class="line">    <span class="built_in">memset</span>(dp, <span class="number">0</span>, <span class="keyword">sizeof</span>(dp));</span><br><span class="line">    path.clear();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Pthread版本：</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;3. Pthread Version:&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    GET_TIME(start);</span><br><span class="line">    pthread_parallel_TSP();</span><br><span class="line">    GET_TIME(stop);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;The minimal distance: &quot;</span> &lt;&lt; dp[<span class="number">0</span>][M - <span class="number">1</span>] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;parallel with pthread run time: %e\n\n&quot;</span>, stop - start);</span><br><span class="line">    FindAndPrintPath();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>值得注意的是，为了避免上个版本的运行结果影响下个版本，需在两个版本的调用间重置<code>dp</code>数组和<code>path</code>。</p>
+</li>
+<li><p>编译：</p>
+<p>由于本程序同时包括<code>OpenMP</code>版本和<code>Pthread</code>版本，因此两个动态链接库都要加入编译参数中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -Wall -g -o  tsp tsp.cpp -fopenmp -lpthread</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行:</p>
+<p>改变输入输出流，重定向到文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./tsp  &lt;输入文件名  &gt;输出文件名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行结果举例：</p>
+<p>数据集：<code>tsp2.txt</code>，17个城市</p>
+<p>线程数：4</p>
+<p>![2021-05-05 10-36-59 的屏幕截图](/home/huanghy/图片/2021-05-05 10-36-59 的屏幕截图.png)</p>
+<p>经验证，计算结果正确。</p>
+<p>串行时间<code>0.087s</code>，四线程<code>OpenMP</code>时间<code>0.019s</code>，四线程<code>Pthread</code>时间<code>0.028s</code>，并行优化效果明显</p>
+</li>
+</ul>
+<h4 id="6-性能比较与分析"><a href="#6-性能比较与分析" class="headerlink" title="6. 性能比较与分析"></a>6. 性能比较与分析</h4><ul>
+<li><p>测试环境：联想小新Air13 Laptop  8处理器</p>
+</li>
+<li><p>测试方法：改变数据集规模和线程数，纵向和横向比较串行方案、<code>OpenMP</code>并行方案、<code>Pthread</code>并行方案的性能</p>
+</li>
+<li><p>部分测试过程：</p>
+<p><code>thread_count = 4</code>，<code>N = 5</code>：</p>
+<p>![2021-05-05 11-40-31 的屏幕截图](/home/huanghy/图片/2021-05-05 11-40-31 的屏幕截图.png)</p>
+<p>数据规模较小时，并行处理带来的增益小于线程切换带来的开销，因此串行版本反而更快。</p>
+</li>
+</ul>
+<p>  <code>thread_count = 8</code>，<code>N = 17</code>：</p>
+<p>  ![2021-05-05 11-43-01 的屏幕截图](/home/huanghy/图片/2021-05-05 11-43-01 的屏幕截图.png)</p>
+<p>  数据规模较大时，并行优化效果开始明显，<code>OpenMP</code>与<code>Pthread</code>运行性能不相上下，并行运行时间约为串行的32%</p>
+<p>  <code>thread_count = 4</code>，<code>N = 22</code>：</p>
+<p>  ![2021-05-05 11-52-30 的屏幕截图](/home/huanghy/图片/2021-05-05 11-52-30 的屏幕截图.png)</p>
+<p>  数据规模越大，并行优化效果越明显，<code>OpenMP</code>与<code>Pthread</code>运行性能仍然不相上下，并行运行时间约为串行的26%</p>
+<p>  <code>thread_count = 8</code>，<code>N = 22</code>：</p>
+<p>  ![2021-05-05 11-52-30 的屏幕截图](/home/huanghy/图片/2021-05-05 11-52-30 的屏幕截图.png)</p>
+<p>  数据规模保持不变时，线程数增加，并行优化效果越明显，<code>OpenMP</code>与<code>Pthread</code>运行性能仍然不相上下，并行运行时间约为串行的22%</p>
+<ul>
+<li><p>结论：</p>
+<ol>
+<li>数据规模在30以下时，三种版本的性能表现均可接受</li>
+<li>数据规模较小时，并行优化效果不明显</li>
+<li>随着数据规模越来越大，并行优化效果越来越明显，当数据规模达到25时，八线程并行运行时间为串行的约16%</li>
+<li>数据规模保持不变时，随着线程数增加，并行优化效果越来越明显</li>
+</ol>
+</li>
+</ul>
+<h4 id="7-加入其他优化策略"><a href="#7-加入其他优化策略" class="headerlink" title="7.加入其他优化策略"></a>7.加入其他优化策略</h4><ul>
+<li><p>为了使性能再上一层楼，在原来并行策略上又加入了编译指令的O2优化，以及对内层for进行循环展开</p>
+</li>
+<li><p>O2优化：</p>
+<p>原理是编译器提供的满足用户优化需要的选项，包括：</p>
+<p>1）精简操作指令；2）尽量满足cpu的流水操作；3）通过对程序行为地猜测，重新调整代码的执行顺序；4）充分使用寄存器</p>
+<p>此优化策略实现起来十分简单，稍微修改编译指令，加入<code>-O2</code>编译参数即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -O2 -Wall -g -o  tsp tsp.cpp -fopenmp -lpthread</span><br></pre></td></tr></table></figure>
+
+<p>优化效果：</p>
+<p>未开启O2：</p>
+<p>![2021-05-05 11-43-01 的屏幕截图](/home/huanghy/图片/2021-05-05 11-43-01 的屏幕截图.png)</p>
+<p>开启O2：</p>
+<p>![2021-05-05 12-11-36 的屏幕截图](/home/huanghy/图片/2021-05-05 12-11-36 的屏幕截图.png)</p>
+<p>这种方法串行并行一起优化了，能将运行时间减少到原来的50%左右</p>
+</li>
+<li><p>循环展开：</p>
+<p>循环展开即手动展开嵌套在内部的循环，能够增大指令调度的空间，减少循环分支指令的开销，可以更好地实现数据预取技术。</p>
+<p>下面对<code>OpenMP</code>的并行版本的最内层循环进行16次循环展开：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 设置为内联函数，用于循环展开</span></span><br><span class="line"><span class="comment"> * @param void</span></span><br><span class="line"><span class="comment"> * @return void</span></span><br><span class="line"><span class="comment"> * @author 黄海宇</span></span><br><span class="line"><span class="comment"> * @date 2021/5/3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">unroll_loop</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (((j &gt;&gt; (n - <span class="number">1</span>)) &amp; <span class="number">1</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (dp[i][j] &gt; g[i][n] + dp[n][j ^ (<span class="number">1</span> &lt;&lt; (n - <span class="number">1</span>))]) &#123;</span><br><span class="line">            dp[i][j] = g[i][n] + dp[n][j ^ (<span class="number">1</span> &lt;&lt; (n - <span class="number">1</span>))];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @brief 使用循环展开的openmp的并行版本</span></span><br><span class="line"><span class="comment"> * @param void</span></span><br><span class="line"><span class="comment"> * @return void</span></span><br><span class="line"><span class="comment"> * @author 黄海宇</span></span><br><span class="line"><span class="comment"> * @date 2021/5/3</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">openmp_unroll_loop_parallel_TSP</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">        dp[i][<span class="number">0</span>] = g[i][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 对经过的城市集合进行分类，经过城市数量相同的归为同一类</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">1</span>; n &lt; N; n++) &#123;</span><br><span class="line">        <span class="comment">// 求出同类情况，并放入b数组中，b数组有效长度存入cnt</span></span><br><span class="line">        <span class="keyword">int</span> cnt = gather(n);</span><br><span class="line"><span class="comment">// 同一类之间没有数据依赖，因此可以并行处理同一类类情况的状态</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp parallel for num_threads(thread_count)</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; cnt; ++index) &#123;</span><br><span class="line">            <span class="keyword">int</span> j = b[index];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">                dp[i][j] = INF;</span><br><span class="line">                <span class="keyword">if</span> (((j &gt;&gt; (i - <span class="number">1</span>)) &amp; <span class="number">1</span>) == <span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                unroll_loop(i,j,<span class="number">1</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">2</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">3</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">4</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">5</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">6</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">7</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">8</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">9</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">10</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">11</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">12</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">13</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">14</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">15</span>);</span><br><span class="line">                unroll_loop(i,j,<span class="number">16</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意循环展开函数必须写成内联函数</p>
+<p>优化效果：</p>
+<p>![2021-05-05 12-17-04 的屏幕截图](/home/huanghy/图片/2021-05-05 12-17-04 的屏幕截图.png)</p>
+<p>八线程数据规模为17的数据集用带循环展开的<code>OpenMP</code>能跑到<code>0.005s</code>，突破了一个数量级，运行时间又下降了约50%</p>
+</li>
+</ul>
+<h4 id="8-最好效果"><a href="#8-最好效果" class="headerlink" title="8. 最好效果"></a>8. 最好效果</h4><p>用<code>OpenMP</code>并行化，线程数<code>thread_count=8</code>，编译参数开启<code>-O2</code>，循环展开<code>16</code>次，跑<code>tsp2.txt</code>数据集，运行最快时间为：</p>
+<p>![2021-05-05 12-35-18 的屏幕截图](/home/huanghy/图片/2021-05-05 12-35-18 的屏幕截图.png)</p>
+<p><code>0.005192秒</code></p>
+<h4 id="9-实验过程中遇到的困难和感想"><a href="#9-实验过程中遇到的困难和感想" class="headerlink" title="9. 实验过程中遇到的困难和感想"></a>9. 实验过程中遇到的困难和感想</h4><ol>
+<li><p>困难：</p>
+<blockquote>
+<p>使用<code>pthread_create</code>时，之前线程函数一直只有一个，这次线程函数要传入的参数不止一个。</p>
+</blockquote>
+</li>
+</ol>
+<p>   解决方法：</p>
+<blockquote>
+<p>自定义一个参数结构体，将要传的参数打包，这样<code>pthread_create</code>就只需要传一个参数了，到线程函数里再将结构体解引用。要注意传入的是指针，因此为了防止几个线程同时对其进行修改，因此没创建一个线程都要新创建一个参数结构体，在线程函数里再将其释放掉即可。</p>
+</blockquote>
+<ol start="2">
+<li><p>困难：</p>
+<blockquote>
+<p>遇到很奇怪的情况：开<code>-O2</code>之后<code>Pthread</code>版本会发生段错误，但不开<code>-O2</code>却没事</p>
+</blockquote>
+</li>
+</ol>
+<p>   解决方法：</p>
+<blockquote>
+<p>多线成debug十分麻烦，在经历了一系列波折后，发现竟然是线程函数没有返回值导致的，加了个<code>return nullptr</code>就好了，可见以后要吸取教训，不能靠默认返回值。</p>
+</blockquote>
+<ul>
+<li><p>感想：</p>
+<p>​    这次实验着实让我收获颇丰，不仅让我更加熟练掌握了<code>Pthread</code>和<code>OpenMP</code>并行程序的编写方法，更让我培养了考虑优化算法性能、优化程序性能的能力。同时，通过踩一些坑，也能让我以后碰到这些情况能处理得更加得心应手。</p>
+</li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2021/05/10/%E5%88%A9%E7%94%A8Pthread%E3%80%81OpenMP%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86TSP%E9%97%AE%E9%A2%98/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/25/%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/" class="archive-article-date">
-  	<time datetime="2020-10-25T07:41:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        </div>
-    	 
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/25/%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/">测试博客</a>
-    </h1>
+  
+    <a href="/2020/10/25/%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">测试博客</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/25/hello-world/" class="archive-article-date">
-  	<time datetime="2020-10-25T07:21:31.046Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/25/hello-world/">Hello World</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
 
           </div>
@@ -273,8 +544,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
