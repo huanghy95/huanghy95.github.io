@@ -1,32 +1,742 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>利用Pthread、OpenMP并行处理TSP问题 | HiiWoo's Blog</title><meta name="author" content="HiiWoo"><meta name="copyright" content="HiiWoo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Description TSP问题（任选一个数据集）大规模输入文件为tsp.txt，每一行为每个城市的坐标小规模输入文件为tsp2.txt，文件内是城市之间的距离矩阵补充说明：可以自行调整数据规模，例如删减至10个城市，提交时需要将输入文件也一起打包输出文件为经过城市的顺序（从0开始编号）  Solution0.问题再现 假设有一个旅行商要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用Pthread、OpenMP并行处理TSP问题">
+<meta property="og:url" content="http://example.com/2021/05/10/%E5%88%A9%E7%94%A8Pthread%E3%80%81OpenMP%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86TSP%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="HiiWoo&#39;s Blog">
+<meta property="og:description" content="Description TSP问题（任选一个数据集）大规模输入文件为tsp.txt，每一行为每个城市的坐标小规模输入文件为tsp2.txt，文件内是城市之间的距离矩阵补充说明：可以自行调整数据规模，例如删减至10个城市，提交时需要将输入文件也一起打包输出文件为经过城市的顺序（从0开始编号）  Solution0.问题再现 假设有一个旅行商要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2021-05-10T05:56:01.000Z">
+<meta property="article:modified_time" content="2021-05-10T05:56:58.428Z">
+<meta property="article:author" content="HiiWoo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2021/05/10/%E5%88%A9%E7%94%A8Pthread%E3%80%81OpenMP%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86TSP%E9%97%AE%E9%A2%98/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '利用Pthread、OpenMP并行处理TSP问题',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-10 13:56:58'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
 
-block content
-  #post
-    if top_img === false
-      include includes/header/post-info.pug
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
 
-    article#article-container.post-content!=page.content
-    include includes/post/post-copyright.pug
-    .tag_share
-      if (theme.post_meta.post.tags)
-        .post-meta__tag-list
-          each item, index in page.tags.data
-            a(href=url_for(item.path)).post-meta__tags #[=item.name]
-      include includes/third-party/share/index.pug
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
         
-    if theme.reward.enable
-      !=partial('includes/post/reward', {}, {cache: true})
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">3</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">HiiWoo's Blog</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">利用Pthread、OpenMP并行处理TSP问题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-05-10T05:56:01.000Z" title="Created 2021-05-10 13:56:01">2021-05-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-05-10T05:56:58.428Z" title="Updated 2021-05-10 13:56:58">2021-05-10</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="利用Pthread、OpenMP并行处理TSP问题"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><blockquote>
+<h4 id="TSP问题（任选一个数据集）"><a href="#TSP问题（任选一个数据集）" class="headerlink" title="TSP问题（任选一个数据集）"></a>TSP问题（任选一个数据集）</h4><p>大规模输入文件为tsp.txt，每一行为每个城市的坐标<br>小规模输入文件为tsp2.txt，文件内是城市之间的距离矩阵<br>补充说明：可以自行调整数据规模，例如删减至10个城市，提交时需要将输入文件也一起打包<br>输出文件为经过城市的顺序（从0开始编号）</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><h4 id="0-问题再现"><a href="#0-问题再现" class="headerlink" title="0.问题再现"></a>0.问题再现</h4><blockquote>
+<p>假设有一个旅行商要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市只能拜访一次，而且最后要回到原来出发的城市。路径的选择目标是要求得的路径路程为所有路径之中的最小值。</p>
+</blockquote>
+<h4 id="1-算法选择"><a href="#1-算法选择" class="headerlink" title="1. 算法选择"></a>1. 算法选择</h4><ul>
+<li><p>TSP问题是个NP完全问题，其求解算法主要包括：</p>
+<ol>
+<li>DFS、BFS穷举搜索树，时间复杂度为$O(n!)$</li>
+<li>状压DP，时间复杂度为$O(2^{n}n^{2})$</li>
+<li>一些随机的、启发式的搜索算法，比如遗传算法、蚁群算法、模拟退火算法、粒子群算法等，能把时间复杂度优化到一个多项式时间</li>
+</ol>
+</li>
+<li><p>课本上的方法即用DFS穷举搜索树，这种方法十分好写，而且课本已经给出了并行方案，所以一开始我也是采用此种方法的。</p>
+<p>然而，此种算法时间复杂度实在太高了，不剪枝的话，即使是跑老师给的小数据集，<code>17!</code>仍然是一个天文数字（$17! = 3.5e14 = 3e6秒 = 34天$），并行了也好不到哪里去。</p>
+<p>然后就尝试了各种剪枝，如剪去已经大于当前最小值的枝等，优化完也仍然较慢，用<code>OpenMP</code>四线程跑小数据集十几分钟跑了百分之三十。这样子并行优化还不如算法优化，因此放弃了暴搜+剪枝的方案</p>
+</li>
+<li><p>然后考虑模拟退火等启发式算法，首先这些算法对我来说实现起来还是比较麻烦的，而且也暂时想不到什么好方法并行。关键是这些启发式算法还有个最大缺点，就是只能求近似最优解，不能保证一定能求出最优解，所以也放弃了这种方法。</p>
+</li>
+<li><p>因此，最后采用了状压DP的方法，时间复杂度为$O(2^{n}n^{2})$，跑个规模17的数据集还是很快的$2^{17}*17^{2}=37 879 808$，串行理论时间复杂度不到一秒，虽然规模48那个数据集跑起来还是要几天几夜（那个数据集要跑感觉只能用遗传算法求近似最优解了）。</p>
+</li>
+</ul>
+<h4 id="2-串行算法思路及实现"><a href="#2-串行算法思路及实现" class="headerlink" title="2. 串行算法思路及实现"></a>2. 串行算法思路及实现</h4><ul>
+<li><p>状压DP，即状态压缩动态规划，是利用计算机二进制的性质来描述状态的一种DP方式。 要实现算法，一是要找好状态转移方程，二是要用二进制描述好每个状态。</p>
+</li>
+<li><p>推导状态转移方程：</p>
+<p>假设从顶点s出发，令dp(i, State)表示从顶点i出发经过State(是一个点的集合)中各个顶点一次且仅一次，最后回到出发点s的最短路径长度。现在开始推导其状态转移方程：</p>
+<ol>
+<li>当V为空集，那么$dp(i,State)$，表示直接从i回到s了，此时$dp(i,State)=c_{is}(i \neq s)$</li>
+<li>如果State不为空，那么就是对子问题的最优求解。必须在State这个城市集合中，尝试每一个，并求出最优解。$$ dp(i,State)=min(C_{ik}+dp(k,State-(k)))$$</li>
+</ol>
+<p>以上即为算法的状态转移方程。另外，不难发现最终路径是个环，所以不论出发点定在哪里，结果都是一样的。所以为了简化过程，不妨假设起点都为0号城市。</p>
+</li>
+<li><p>利用二进制描述状态：</p>
+<p>考虑dp数组的第二维State，其含义是经过城市编号的点集，则自然想到若有N个城市，能用一个N-1位二进制数来表示每种状态（无需考虑出发点），该二进制数的第n位是否为1表示第n个城市是否在集合中。例如，对于N=4，集合{1,3}可表示为二进制数101，对应十进制数即为3，因此，第二维可用一个$2^{n-1}$规模的十进制数表示。根据二进制位运算，可以定义以下操作：</p>
+<ul>
+<li>对于第y个城市，他的二进制表达为，1&lt;&lt;(y-1)；</li>
+<li>对于数字x，要看它的第i位是不是1，那么可以通过判断布尔表达式 (((x &gt;&gt; (i - 1) ) &amp; 1) == 1的真值来实现；</li>
+<li>由动态规划公式可知，需要从集合中剔除元素。假如集合用索引x表示，要剔除元素标号为i,我们异或运算实现减法，其运算表示为： x = x ^ (1&lt;&lt;(i - 1))。</li>
+</ul>
+</li>
+<li><p>数据结构、全局变量定义：</p>
+<pre><code class="c++">#define N 17            // 城市数量
+#define INF 1 &lt;&lt; 30  // 定义最大值， 用于tsp更新dp数组
 
-    //- ad
-    if theme.ad && theme.ad.post
-      .ads-wrap!=theme.ad.post
+// 用于计算时刻
+#define GET_TIME(now)                           \
+    &#123;                                           \
+        struct timeval t;                       \
+        gettimeofday(&amp;t, NULL);                 \
+        now = t.tv_sec + t.tv_usec / 1000000.0; \
+    &#125;
 
-    if theme.post_pagination
-      include includes/pagination.pug
-    if theme.related_post && theme.related_post.enable
-      != related_posts(page,site.posts)
+const int M = 1 &lt;&lt; (N - 1);  // 状态数 M = 2^(n-1)
+int g[N][N];                 // 存原始图
+int dp[N][M];  // dp数组，dp[point][state]表示从point出发经过state中各个点一次且仅一次，最后回到出发点的最短路径长度
+vector&lt;int&gt; path;  // 路径数组，用于打印路径
+</code></pre>
+</li>
+<li><p>求解TSP函数主体：</p>
+<pre><code class="c++">/**
+ * @brief 串行版本的tsp求解函数，用状压dp实现，理论复杂度为O((2^n)*(n^2))，由于路径是一个环，设出发点为0号城市
+ * @param void
+ * @return void
+ * @author 黄海宇
+ * @date 2021/5/3
+ */
+void Serial_TSP() &#123;
+    // 初始化，不经过任何点的dp数组状态置为g[i][0]，即该点到出发点0号城市之间的距离
+    for (int i = 0; i &lt; N; i++) &#123;
+        dp[i][0] = g[i][0];
+    &#125;
+    // 进入状态处理循环，第一层for，遍历状态维，即经过城市集合
+    for (int j = 1; j &lt; M; j++) &#123;
+        // 第二层for，遍历当前城市
+        for (int i = 0; i &lt; N; i++) &#123;
+            // 初始化当前状态最小路径长度为inf
+            dp[i][j] = INF;
+            // 如果要经过路径上的城市包括当前城市，违规，进入下一次循环
+            if (((j &gt;&gt; (i - 1)) &amp; 1) == 1) &#123;
+                continue;
+            &#125;
+            // 遍历转移自哪个状态，取min&#123;c_ik+d(k,V-&#123;k&#125;)&#125;；
+            for (int k = 1; k &lt; N; k++) &#123;
+                if (((j &gt;&gt; (k - 1)) &amp; 1) == 0) &#123;
+                    continue;
+                &#125;
+                if (dp[i][j] &gt; g[i][k] + dp[k][j ^ (1 &lt;&lt; (k - 1))]) &#123;
+                    // 状态转移
+                    dp[i][j] = g[i][k] + dp[k][j ^ (1 &lt;&lt; (k - 1))];
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>根据dp结果找到路径并将其打印</p>
+<p>可以用dp数组来反向推出其路径。其算法思想如下：</p>
+<p>比如在第一步时，我们就知道那个值最小，因为dp[][]数组我们已经计算出来了，由计算可知$C_{01}+d(1,{2,3,4})$最小，所以一开始从起始点0出发，经过1。接下来同样计算d(1,{2,3,4})，由计算可知$C_{14}+d(4,{2,3})$所以0—&gt;1—-&gt;4，接下来同理求d(4,{2,3})，以此类推，最终反向推出整条路径。</p>
+<pre><code class="C++">/**
+ * @brief 用于判断是否所有城市都已经被访问过了
+ * @param visited   传入访问记录数组
+ * @return 所有城市都已经被访问过了，则返回1，否则返回0
+ * @author 黄海宇
+ * @date 2021/5/3
+ */
+bool isVisited(bool visited[]) &#123;
+    for (int i = 1; i &lt; N; i++) &#123;
+        if (visited[i] == 0) &#123;
+            return 0;
+        &#125;
+    &#125;
+    return 1;
+&#125;
 
-    if page.comments !== false && theme.comments && theme.comments.use
-      - var commentsJsLoad = true
-      !=partial('includes/third-party/comments/index', {}, {cache: true})
-      
+/**
+ * @brief 用于根据dp结果找到最短路径并将其输出
+ * @param void
+ * @return void
+ * @author 黄海宇
+ * @date 2021/5/3
+ */
+void FindAndPrintPath() &#123;
+    bool visited[N] = &#123;false&#125;;
+    int par = 0, min = INF, S = M - 1, temp;
+    path.push_back(0);
+
+    while (!isVisited(visited)) &#123;
+        for (int i = 1; i &lt; N; i++) &#123;
+            if (visited[i] == false &amp;&amp; (S &amp; (1 &lt;&lt; (i - 1))) != 0) &#123;
+                if (min &gt; g[i][par] + dp[i][(S ^ (1 &lt;&lt; (i - 1)))]) &#123;
+                    min = g[i][par] + dp[i][(S ^ (1 &lt;&lt; (i - 1)))];
+                    temp = i;
+                &#125;
+            &#125;
+        &#125;
+        par = temp;
+        path.push_back(par);
+        visited[par] = true;
+        S = S ^ (1 &lt;&lt; (par - 1));
+        min = INF;
+    &#125;
+    cout &lt;&lt; &quot;The path is: &quot;;
+    for (auto val:path) &#123;
+        cout &lt;&lt; val &lt;&lt; &quot; -&gt; &quot;;
+    &#125;
+    cout &lt;&lt; 0;
+&#125;
+</code></pre>
+</li>
+<li><p><code>init</code>函数用于接收输入邻接矩阵并转存到二维数组g中</p>
+<pre><code class="c++">/**
+ * @brief 初始化函数，用于接受输入的邻接矩阵并将其存入g中
+ * @param void
+ * @return void
+ * @author 黄海宇
+ * @date 2021/5/3
+ */
+void init() &#123;
+    for (int i = 0; i &lt; N; ++i) &#123;
+        for (int j = 0; j &lt; N; ++j) &#123;
+            cin &gt;&gt; g[i][j];
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+</li>
+</ul>
+<h4 id="3-使用OpenMP的并行算法思路及实现"><a href="#3-使用OpenMP的并行算法思路及实现" class="headerlink" title="3. 使用OpenMP的并行算法思路及实现"></a>3. 使用OpenMP的并行算法思路及实现</h4><ul>
+<li><p>要实现并行化，首先要找到可并行化的部分，该部分要求一是不能有数据依赖，二是并行工作量不能太少，否则切换进程的时间还不如串行，可以看到串行版本的TSP函数主体求解时嵌套了三个for，那最好当然是并行最外层循环，然而，最外层循环用来遍历dp数组的状态维，存在数据依赖，不能直接拆分并行。因此，考虑对这层for进行分类，去除数据依赖。考虑State的意义，它是每个状态经过中间点的集合，可对集合中点的个数进行分类，可以证明，集合中元素相等的一类状态不会互相影响，一个状态只依赖于点集中点的数量减一的状态集。因此，可先以此对外层循环分类，分类后的每一类状态便可以用来并行了。</p>
+<p>因此下面关注两个点，一是对状态进行分类，二是利用<code>OpenMP</code>具体实现并行</p>
+</li>
+<li><p>对状态进行分类：</p>
+<p>点集中的点的个数，其实就是二进制数中1的个数，因此写一个小接口，用来计算N-1位二进制数中有n个1的所有数即可。将此接口设计为内联函数，以加快运行速度。</p>
+<p>用到的全局变量：</p>
+<pre><code class="c++">int b[M];  // 存放相同城市数的state集合的十进制表示（仅在两个多线程版本用到）
+</code></pre>
+<p>接口代码：</p>
+<pre><code class="c++">/**
+ * @brief 找到所有N位二进制数里面有n个1对应的十进制数，并存到b数组中，设置为inline函数，加快运行时速度
+ * @param n    所求二进制数中1的个数
+ * @return 返回b数组有效长度
+ * @author 黄海宇
+ * @date 2021/5/3
+ */
+inline int gather(int n) &#123;
+    bool first = 1; // 特判第一次进入循环
+    int r, c;
+    int cnt = 0;
+    for (int j = (1U &lt;&lt; n) - 1; first || r &lt; (1 &lt;&lt; (N - 1));) &#123;
+        b[cnt] = j; // 将得到的每个数存入b数组
+        cnt++;
+        c = j &amp; -j;
+        r = j + c;
+        j = (((r ^ j) &gt;&gt; 2) / c) | r;
+        first = 0;
+    &#125;
+    return cnt;
+&#125;
+</code></pre>
+</li>
+<li><p>利用<code>OpenMP</code>实现并行：</p>
+<p><code>OpenMP</code>版本的并行实现十分简单，引入个头文件，在要并行的循环前加个<code>parallel for</code>即可，我的for里也没有要特殊处理的私有变量，因此处理起来十分简单。</p>
+<p><code>OpenMP</code>并行版本函数主体：</p>
+<pre><code class="c++">/**
+ * @brief 使用openmp的并行版本的tsp求解函数，并行部分为state集合中定点数相同的dp数组状态的处理
+ * @param void
+ * @return void
+ * @author 黄海宇
+ * @date 2021/5/3
+ */
+void openmp_parallel_TSP() &#123;
+    for (int i = 0; i &lt; N; i++) &#123;
+        dp[i][0] = g[i][0];
+    &#125;
+    // 对经过的城市集合进行分类，经过城市数量相同的归为同一类
+    for (int n = 1; n &lt; N; n++) &#123;
+        // 求出同类情况，并放入b数组中，b数组有效长度存入cnt
+        int cnt = gather(n);
+        // 同一类之间没有数据依赖，因此可以并行处理同一类类情况的状态
+        #pragma omp parallel for num_threads(thread_count)
+        for (int index = 0; index &lt; cnt; ++index) &#123;
+            int j = b[index];
+            for (int i = 0; i &lt; N; i++) &#123;
+                dp[i][j] = INF;
+                if (((j &gt;&gt; (i - 1)) &amp; 1) == 1) &#123;
+                    continue;
+                &#125;
+                for (int k = 1; k &lt; N; k++) &#123;
+                    if (((j &gt;&gt; (k - 1)) &amp; 1) == 0) &#123;
+                        continue;
+                    &#125;
+                    if (dp[i][j] &gt; g[i][k] + dp[k][j ^ (1 &lt;&lt; (k - 1))]) &#123;
+                        dp[i][j] = g[i][k] + dp[k][j ^ (1 &lt;&lt; (k - 1))];
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>1</p>
+</li>
+<li><p>1</p>
+</li>
+</ul>
+<h4 id="4-使用Pthread的并行算法思路及实现"><a href="#4-使用Pthread的并行算法思路及实现" class="headerlink" title="4. 使用Pthread的并行算法思路及实现"></a>4. 使用Pthread的并行算法思路及实现</h4><ul>
+<li><p><code>Pthread</code>版本的并行思路与<code>OpenMP</code>版本相同，仍是考虑对外层for进行分类，将点集中元素个数相同的每一类状态进行并行处理。不过<code>Pthread</code>版本并行实现起来较为复杂，需要设计线程函数，并自己设计负载均衡策略。</p>
+</li>
+<li><p>用到的全局变量和数据结构：</p>
+<pre><code class="c++">int b[M];  // 存放相同城市数的state集合的十进制表示（仅在两个多线程版本用到）
+
+/**
+ * @brief 该结构体用于存放向pthread的线程函数传入的多个参数
+ * @author 黄海宇
+ * @date 2021/5/3
+ */
+struct parameter &#123;
+    void* rank;  // 线程号
+    int* ar;     // 待划分的数组
+    int len;     // 待划分的数组的长度
+&#125;;
+</code></pre>
+<p>由于b数组一直在发生变化，要创建多次线程，因此线程函数的参数要传入不止一个，而<code>pthread_create()</code>函数用于传递线程函数参数的参数只有一个，因此考虑而外设计<code>parameter</code>结构体，用于将待传入参数进行打包。实际要传入的参数包括线程号、待划分的数组以及待划分的数组长度。</p>
+</li>
+<li><p>利用<code>Pthread</code>实现并行的函数主体：</p>
+<pre><code class="c++">/**
+ * @brief 使用pthread的并行版本的tsp求解函数，并行部分为state集合中定点数相同的dp数组状态的处理
+ * @param void
+ * @return void
+ * @author 黄海宇
+ * @date 2021/5/3
+ */
+void pthread_parallel_TSP() &#123;
+    for (int i = 0; i &lt; N; i++) &#123;
+        dp[i][0] = g[i][0];
+    &#125;
+    // 对经过的城市集合进行分类，经过城市数量相同的归为同一类
+    for (int n = 1; n &lt; N; n++) &#123;
+
+        // 求出同类情况，并放入b数组中，b数组有效长度存入cnt
+        int cnt = gather(n);
+        // 同一类之间没有数据依赖，因此可以并行处理同一类类情况的状态
+
+        long thread; // 线程号
+        pthread_t* thread_handles; // 线程指针
+
+        // 为线程指针申请内存
+        thread_handles = (pthread_t*)malloc(thread_count * sizeof(pthread_t));
+
+        // 开启thread_count个线程，每个线程启用线程函数
+        for (thread = 0; thread &lt; thread_count; thread++) &#123;
+            struct parameter* par = new parameter;
+            par-&gt;rank = (void*)thread;
+            par-&gt;len = cnt;
+            par-&gt;ar = b;
+            pthread_create(&amp;thread_handles[thread], NULL, Thread_work,
+                           (void*)par);
+        &#125;
+
+        // 同步线程
+        for (thread = 0; thread &lt; thread_count; thread++)
+            pthread_join(thread_handles[thread], NULL);
+
+        free(thread_handles);
+    &#125;
+&#125;
+</code></pre>
+<p>逻辑上，并行策略与<code>OpenMP</code>相同。实际上，函数主体主要包括以下工作：</p>
+<ol>
+<li>每次对状态进行分类；</li>
+<li>每次分类后开启<code>thread_count</code>个线程，所以一共需要开启<code>N*thread_count</code>次线程；</li>
+<li>对于开启的每个线程，先将待传入参数打包到一个<code>parameter</code>结构体中，再通过<code>pthread_create</code>调用线程函数；</li>
+<li>同步线程，释放之前申请的空间</li>
+</ol>
+</li>
+<li><p>线程函数工作：</p>
+<pre><code class="c++">/**
+ * @brief pthread的线程函数
+ * @param arg 打包多个参数的参数结构体，包括线程号、待划分数组、待划分数组的长度
+ * @return void*
+ * @author 黄海宇
+ * @date 2021/5/3
+ */
+void* Thread_work(void* arg) &#123;
+    // 解引用传入的参数结构体
+    struct parameter* p = (parameter*)arg;
+    void* rank = p-&gt;rank;
+    int* ar = p-&gt;ar;
+    int n = p-&gt;len;
+    free(p);
+    long my_rank = (long)rank;
+
+    // 计算各线程负责处理的数组区间的左右值，尽量负载均衡
+    long long my_n = n / thread_count;
+    long long res = n % thread_count;
+    long long my_left;
+    long long j;
+
+    if (my_rank &lt; res) &#123;
+        my_n++;
+        my_left = my_n * my_rank;
+    &#125; else &#123;
+        my_left = my_n * my_rank + res;
+    &#125;
+    long long my_right = my_left + my_n;
+
+    // 各线程处理各自负责部分的数组
+    for (int index = my_left; index &lt; my_right; ++index) &#123;
+        j = ar[index];
+        for (int i = 0; i &lt; N; i++) &#123;
+            dp[i][j] = INF;
+            if (((j &gt;&gt; (i - 1)) &amp; 1) == 1) &#123;
+                continue;
+            &#125;
+            for (int k = 1; k &lt; N; k++) &#123;
+                if (((j &gt;&gt; (k - 1)) &amp; 1) == 0) &#123;
+                    continue;
+                &#125;
+                if (dp[i][j] &gt; g[i][k] + dp[k][j ^ (1 &lt;&lt; (k - 1))]) &#123;
+                    dp[i][j] = g[i][k] + dp[k][j ^ (1 &lt;&lt; (k - 1))];
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    return nullptr;
+&#125;
+</code></pre>
+<p>线程函数的主要工作有：</p>
+<ol>
+<li>解引用传入的<code>parameter</code>结构体，将其空间进行回收；</li>
+<li>计算本线程所负责区间的左右端点。为实现负载均衡，首先将总的待处理数组长度均分，再将所剩余数<code>res</code>分配到前<code>res</code>个线程中；</li>
+<li>各线程处理各自负责部分的数组。由于各线程更新dp数组的不同位置处，因此不存在共享变量导致的临界区问题，因此也不需加锁。</li>
+<li>最后返回<code>nullptr</code>，一开始没注意要有返回值导致开<code>-O2</code>编译参数时出现一些奇怪的问题。</li>
+</ol>
+</li>
+</ul>
+<h4 id="5-程序执行及运行结果显示"><a href="#5-程序执行及运行结果显示" class="headerlink" title="5. 程序执行及运行结果显示"></a>5. 程序执行及运行结果显示</h4><ul>
+<li><p>为便于比较，将三个版本的解法均写入同一个程序中。主函数实现如下：</p>
+<pre><code class="c++">int main() &#123;
+    // 计时开始时刻和计时结束时刻
+    double start, stop;
+    init();
+
+    // 串行版本：
+    cout &lt;&lt; &quot;1. Serial Version:&quot; &lt;&lt; endl;
+    GET_TIME(start);
+    Serial_TSP();
+    GET_TIME(stop);
+    cout &lt;&lt; &quot;The minimal distance: &quot; &lt;&lt; dp[0][M - 1] &lt;&lt; endl;
+    printf(&quot;Serial run time: %e\n\n&quot;, stop - start);
+    FindAndPrintPath();
+    cout &lt;&lt; endl &lt;&lt; endl;
+
+    cout &lt;&lt; &quot;---------------------------------&quot; &lt;&lt; endl &lt;&lt; endl;
+
+    // 重置dp数组和path，不影响下个版本的工作
+    memset(dp, 0, sizeof(dp));
+    path.clear();
+
+    // OpenMP版本：
+    cout &lt;&lt; &quot;2. OpenMP Version:&quot; &lt;&lt; endl;
+    GET_TIME(start);
+    openmp_parallel_TSP();
+    GET_TIME(stop);
+    cout &lt;&lt; &quot;The minimal distance: &quot; &lt;&lt; dp[0][M - 1] &lt;&lt; endl;
+    printf(&quot;parallel with openmp run time: %e\n\n&quot;, stop - start);
+    FindAndPrintPath();
+
+    cout &lt;&lt; endl &lt;&lt; endl;
+
+    cout &lt;&lt; &quot;---------------------------------&quot; &lt;&lt; endl &lt;&lt; endl;
+
+    // 重置dp数组和path，不影响下个版本的工作
+    memset(dp, 0, sizeof(dp));
+    path.clear();
+
+    // Pthread版本：
+    cout &lt;&lt; &quot;3. Pthread Version:&quot; &lt;&lt; endl;
+    GET_TIME(start);
+    pthread_parallel_TSP();
+    GET_TIME(stop);
+    cout &lt;&lt; &quot;The minimal distance: &quot; &lt;&lt; dp[0][M - 1] &lt;&lt; endl;
+    printf(&quot;parallel with pthread run time: %e\n\n&quot;, stop - start);
+    FindAndPrintPath();
+
+    return 0;
+&#125;
+</code></pre>
+<p>值得注意的是，为了避免上个版本的运行结果影响下个版本，需在两个版本的调用间重置<code>dp</code>数组和<code>path</code>。</p>
+</li>
+<li><p>编译：</p>
+<p>由于本程序同时包括<code>OpenMP</code>版本和<code>Pthread</code>版本，因此两个动态链接库都要加入编译参数中</p>
+<pre><code class="bash">g++ -Wall -g -o  tsp tsp.cpp -fopenmp -lpthread
+</code></pre>
+</li>
+<li><p>运行:</p>
+<p>改变输入输出流，重定向到文件：</p>
+<pre><code class="bash">./tsp  &lt;输入文件名  &gt;输出文件名
+</code></pre>
+</li>
+<li><p>运行结果举例：</p>
+<p>数据集：<code>tsp2.txt</code>，17个城市</p>
+<p>线程数：4</p>
+<p>![2021-05-05 10-36-59 的屏幕截图](/home/huanghy/图片/2021-05-05 10-36-59 的屏幕截图.png)</p>
+<p>经验证，计算结果正确。</p>
+<p>串行时间<code>0.087s</code>，四线程<code>OpenMP</code>时间<code>0.019s</code>，四线程<code>Pthread</code>时间<code>0.028s</code>，并行优化效果明显</p>
+</li>
+</ul>
+<h4 id="6-性能比较与分析"><a href="#6-性能比较与分析" class="headerlink" title="6. 性能比较与分析"></a>6. 性能比较与分析</h4><ul>
+<li><p>测试环境：联想小新Air13 Laptop  8处理器</p>
+</li>
+<li><p>测试方法：改变数据集规模和线程数，纵向和横向比较串行方案、<code>OpenMP</code>并行方案、<code>Pthread</code>并行方案的性能</p>
+</li>
+<li><p>部分测试过程：</p>
+<p><code>thread_count = 4</code>，<code>N = 5</code>：</p>
+<p>![2021-05-05 11-40-31 的屏幕截图](/home/huanghy/图片/2021-05-05 11-40-31 的屏幕截图.png)</p>
+<p>数据规模较小时，并行处理带来的增益小于线程切换带来的开销，因此串行版本反而更快。</p>
+<p><code>thread_count = 8</code>，<code>N = 17</code>：</p>
+<p>![2021-05-05 11-43-01 的屏幕截图](/home/huanghy/图片/2021-05-05 11-43-01 的屏幕截图.png)</p>
+<p>数据规模较大时，并行优化效果开始明显，<code>OpenMP</code>与<code>Pthread</code>运行性能不相上下，并行运行时间约为串行的32%</p>
+<p><code>thread_count = 4</code>，<code>N = 22</code>：</p>
+<p>![2021-05-05 11-52-30 的屏幕截图](/home/huanghy/图片/2021-05-05 11-52-30 的屏幕截图.png)</p>
+<p>数据规模越大，并行优化效果越明显，<code>OpenMP</code>与<code>Pthread</code>运行性能仍然不相上下，并行运行时间约为串行的26%</p>
+<p><code>thread_count = 8</code>，<code>N = 22</code>：</p>
+<p>![2021-05-05 11-52-30 的屏幕截图](/home/huanghy/图片/2021-05-05 11-52-30 的屏幕截图.png)</p>
+<p>数据规模保持不变时，线程数增加，并行优化效果越明显，<code>OpenMP</code>与<code>Pthread</code>运行性能仍然不相上下，并行运行时间约为串行的22%</p>
+</li>
+<li><p>结论：</p>
+<ol>
+<li>数据规模在30以下时，三种版本的性能表现均可接受</li>
+<li>数据规模较小时，并行优化效果不明显</li>
+<li>随着数据规模越来越大，并行优化效果越来越明显，当数据规模达到25时，八线程并行运行时间为串行的约16%</li>
+<li>数据规模保持不变时，随着线程数增加，并行优化效果越来越明显</li>
+</ol>
+</li>
+</ul>
+<h4 id="7-加入其他优化策略"><a href="#7-加入其他优化策略" class="headerlink" title="7.加入其他优化策略"></a>7.加入其他优化策略</h4><ul>
+<li><p>为了使性能再上一层楼，在原来并行策略上又加入了编译指令的O2优化，以及对内层for进行循环展开</p>
+</li>
+<li><p>O2优化：</p>
+<p>原理是编译器提供的满足用户优化需要的选项，包括：</p>
+<p>1）精简操作指令；2）尽量满足cpu的流水操作；3）通过对程序行为地猜测，重新调整代码的执行顺序；4）充分使用寄存器</p>
+<p>此优化策略实现起来十分简单，稍微修改编译指令，加入<code>-O2</code>编译参数即可：</p>
+<pre><code class="bash">g++ -O2 -Wall -g -o  tsp tsp.cpp -fopenmp -lpthread
+</code></pre>
+<p>优化效果：</p>
+<p>未开启O2：</p>
+<p>![2021-05-05 11-43-01 的屏幕截图](/home/huanghy/图片/2021-05-05 11-43-01 的屏幕截图.png)</p>
+<p>开启O2：</p>
+<p>![2021-05-05 12-11-36 的屏幕截图](/home/huanghy/图片/2021-05-05 12-11-36 的屏幕截图.png)</p>
+<p>这种方法串行并行一起优化了，能将运行时间减少到原来的50%左右</p>
+</li>
+<li><p>循环展开：</p>
+<p>循环展开即手动展开嵌套在内部的循环，能够增大指令调度的空间，减少循环分支指令的开销，可以更好地实现数据预取技术。</p>
+<p>下面对<code>OpenMP</code>的并行版本的最内层循环进行16次循环展开：</p>
+<pre><code class="c++">/**
+ * @brief 设置为内联函数，用于循环展开
+ * @param void
+ * @return void
+ * @author 黄海宇
+ * @date 2021/5/3
+ */
+inline void unroll_loop(int i, int j, int n) &#123;
+    if (((j &gt;&gt; (n - 1)) &amp; 1) != 0) &#123;
+        if (dp[i][j] &gt; g[i][n] + dp[n][j ^ (1 &lt;&lt; (n - 1))]) &#123;
+            dp[i][j] = g[i][n] + dp[n][j ^ (1 &lt;&lt; (n - 1))];
+        &#125;
+    &#125;
+&#125;
+
+/**
+ * @brief 使用循环展开的openmp的并行版本
+ * @param void
+ * @return void
+ * @author 黄海宇
+ * @date 2021/5/3
+ */
+void openmp_unroll_loop_parallel_TSP() &#123;
+    for (int i = 0; i &lt; N; i++) &#123;
+        dp[i][0] = g[i][0];
+    &#125;
+    // 对经过的城市集合进行分类，经过城市数量相同的归为同一类
+    for (int n = 1; n &lt; N; n++) &#123;
+        // 求出同类情况，并放入b数组中，b数组有效长度存入cnt
+        int cnt = gather(n);
+// 同一类之间没有数据依赖，因此可以并行处理同一类类情况的状态
+#pragma omp parallel for num_threads(thread_count)
+        for (int index = 0; index &lt; cnt; ++index) &#123;
+            int j = b[index];
+            for (int i = 0; i &lt; N; i++) &#123;
+                dp[i][j] = INF;
+                if (((j &gt;&gt; (i - 1)) &amp; 1) == 1) &#123;
+                    continue;
+                &#125;
+                unroll_loop(i,j,1);
+                unroll_loop(i,j,2);
+                unroll_loop(i,j,3);
+                unroll_loop(i,j,4);
+                unroll_loop(i,j,5);
+                unroll_loop(i,j,6);
+                unroll_loop(i,j,7);
+                unroll_loop(i,j,8);
+                unroll_loop(i,j,9);
+                unroll_loop(i,j,10);
+                unroll_loop(i,j,11);
+                unroll_loop(i,j,12);
+                unroll_loop(i,j,13);
+                unroll_loop(i,j,14);
+                unroll_loop(i,j,15);
+                unroll_loop(i,j,16);
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>注意循环展开函数必须写成内联函数</p>
+<p>优化效果：</p>
+<p>![2021-05-05 12-17-04 的屏幕截图](/home/huanghy/图片/2021-05-05 12-17-04 的屏幕截图.png)</p>
+<p>八线程数据规模为17的数据集用带循环展开的<code>OpenMP</code>能跑到<code>0.005s</code>，突破了一个数量级，运行时间又下降了约50%</p>
+</li>
+</ul>
+<h4 id="8-最好效果"><a href="#8-最好效果" class="headerlink" title="8. 最好效果"></a>8. 最好效果</h4><p>用<code>OpenMP</code>并行化，线程数<code>thread_count=8</code>，编译参数开启<code>-O2</code>，循环展开<code>16</code>次，跑<code>tsp2.txt</code>数据集，运行最快时间为：</p>
+<p>![2021-05-05 12-35-18 的屏幕截图](/home/huanghy/图片/2021-05-05 12-35-18 的屏幕截图.png)</p>
+<p><code>0.005192秒</code></p>
+<h4 id="9-实验过程中遇到的困难和感想"><a href="#9-实验过程中遇到的困难和感想" class="headerlink" title="9. 实验过程中遇到的困难和感想"></a>9. 实验过程中遇到的困难和感想</h4><ol>
+<li><p>困难：</p>
+<blockquote>
+<p>使用<code>pthread_create</code>时，之前线程函数一直只有一个，这次线程函数要传入的参数不止一个。</p>
+</blockquote>
+<p>解决方法：</p>
+<blockquote>
+<p>自定义一个参数结构体，将要传的参数打包，这样<code>pthread_create</code>就只需要传一个参数了，到线程函数里再将结构体解引用。要注意传入的是指针，因此为了防止几个线程同时对其进行修改，因此没创建一个线程都要新创建一个参数结构体，在线程函数里再将其释放掉即可。</p>
+</blockquote>
+</li>
+<li><p>困难：</p>
+<blockquote>
+<p>遇到很奇怪的情况：开<code>-O2</code>之后<code>Pthread</code>版本会发生段错误，但不开<code>-O2</code>却没事</p>
+</blockquote>
+<p>解决方法：</p>
+<blockquote>
+<p>多线成debug十分麻烦，在经历了一系列波折后，发现竟然是线程函数没有返回值导致的，加了个<code>return nullptr</code>就好了，可见以后要吸取教训，不能靠默认返回值。</p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li><p>感想：</p>
+<p>​    这次实验着实让我收获颇丰，不仅让我更加熟练掌握了<code>Pthread</code>和<code>OpenMP</code>并行程序的编写方法，更让我培养了考虑优化算法性能、优化程序性能的能力。同时，通过踩一些坑，也能让我以后碰到这些情况能处理得更加得心应手。</p>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">HiiWoo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2021/05/10/%E5%88%A9%E7%94%A8Pthread%E3%80%81OpenMP%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86TSP%E9%97%AE%E9%A2%98/">http://example.com/2021/05/10/%E5%88%A9%E7%94%A8Pthread%E3%80%81OpenMP%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86TSP%E9%97%AE%E9%A2%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2020/10/25/%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">测试博客</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">HiiWoo</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">3</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Description"><span class="toc-number">1.</span> <span class="toc-text">Description</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TSP%E9%97%AE%E9%A2%98%EF%BC%88%E4%BB%BB%E9%80%89%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E9%9B%86%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">TSP问题（任选一个数据集）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Solution"><span class="toc-number">2.</span> <span class="toc-text">Solution</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#0-%E9%97%AE%E9%A2%98%E5%86%8D%E7%8E%B0"><span class="toc-number">2.1.</span> <span class="toc-text">0.问题再现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%AE%97%E6%B3%95%E9%80%89%E6%8B%A9"><span class="toc-number">2.2.</span> <span class="toc-text">1. 算法选择</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E4%B8%B2%E8%A1%8C%E7%AE%97%E6%B3%95%E6%80%9D%E8%B7%AF%E5%8F%8A%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.3.</span> <span class="toc-text">2. 串行算法思路及实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E4%BD%BF%E7%94%A8OpenMP%E7%9A%84%E5%B9%B6%E8%A1%8C%E7%AE%97%E6%B3%95%E6%80%9D%E8%B7%AF%E5%8F%8A%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.4.</span> <span class="toc-text">3. 使用OpenMP的并行算法思路及实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E4%BD%BF%E7%94%A8Pthread%E7%9A%84%E5%B9%B6%E8%A1%8C%E7%AE%97%E6%B3%95%E6%80%9D%E8%B7%AF%E5%8F%8A%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.5.</span> <span class="toc-text">4. 使用Pthread的并行算法思路及实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E5%8F%8A%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C%E6%98%BE%E7%A4%BA"><span class="toc-number">2.6.</span> <span class="toc-text">5. 程序执行及运行结果显示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83%E4%B8%8E%E5%88%86%E6%9E%90"><span class="toc-number">2.7.</span> <span class="toc-text">6. 性能比较与分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-%E5%8A%A0%E5%85%A5%E5%85%B6%E4%BB%96%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="toc-number">2.8.</span> <span class="toc-text">7.加入其他优化策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-%E6%9C%80%E5%A5%BD%E6%95%88%E6%9E%9C"><span class="toc-number">2.9.</span> <span class="toc-text">8. 最好效果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-%E5%AE%9E%E9%AA%8C%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9B%B0%E9%9A%BE%E5%92%8C%E6%84%9F%E6%83%B3"><span class="toc-number">2.10.</span> <span class="toc-text">9. 实验过程中遇到的困难和感想</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/05/10/%E5%88%A9%E7%94%A8Pthread%E3%80%81OpenMP%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86TSP%E9%97%AE%E9%A2%98/" title="利用Pthread、OpenMP并行处理TSP问题"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用Pthread、OpenMP并行处理TSP问题"/></a><div class="content"><a class="title" href="/2021/05/10/%E5%88%A9%E7%94%A8Pthread%E3%80%81OpenMP%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86TSP%E9%97%AE%E9%A2%98/" title="利用Pthread、OpenMP并行处理TSP问题">利用Pthread、OpenMP并行处理TSP问题</a><time datetime="2021-05-10T05:56:01.000Z" title="Created 2021-05-10 13:56:01">2021-05-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/25/%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/" title="测试博客"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="测试博客"/></a><div class="content"><a class="title" href="/2020/10/25/%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/" title="测试博客">测试博客</a><time datetime="2020-10-25T07:41:01.000Z" title="Created 2020-10-25 15:41:01">2020-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/10/25/hello-world/" title="Hello World"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2020/10/25/hello-world/" title="Hello World">Hello World</a><time datetime="2020-10-25T07:21:31.046Z" title="Created 2020-10-25 15:21:31">2020-10-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By HiiWoo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
