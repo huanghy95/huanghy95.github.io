@@ -1,0 +1,418 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Linux、shell、c++的一些tips(学评测时遇到) | HiWoo's Blog</title><meta name="keywords" content="知识收集"><meta name="author" content="HiWoo"><meta name="copyright" content="HiWoo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="linux psLinux中的ps命令是Process Status的缩写。ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照， 就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用top命令。 Linux grepLinux grep 命令用于查找文件里符合条件的字符串。 grep 指令用于查找内容包含指定的范本样式的文件，如果发现某文件的内容符">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux、shell、c++的一些tips(学评测时遇到)">
+<meta property="og:url" content="https://huanghy95.github.io/2021/07/28/Linux%E3%80%81shell%E3%80%81c++%E7%9A%84%E4%B8%80%E4%BA%9Btips(%E5%AD%A6%E8%AF%84%E6%B5%8B%E6%97%B6%E9%81%87%E5%88%B0)/index.html">
+<meta property="og:site_name" content="HiWoo&#39;s Blog">
+<meta property="og:description" content="linux psLinux中的ps命令是Process Status的缩写。ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照， 就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用top命令。 Linux grepLinux grep 命令用于查找文件里符合条件的字符串。 grep 指令用于查找内容包含指定的范本样式的文件，如果发现某文件的内容符">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/08/29/eDFOCToJPbS7aBx.jpg">
+<meta property="article:published_time" content="2021-07-28T09:55:06.000Z">
+<meta property="article:modified_time" content="2021-08-29T16:03:54.493Z">
+<meta property="article:author" content="HiWoo">
+<meta property="article:tag" content="知识收集">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/08/29/eDFOCToJPbS7aBx.jpg"><link rel="shortcut icon" href="https://i.loli.net/2021/08/29/rKpGAQTNLCwjJoO.jpg"><link rel="canonical" href="https://huanghy95.github.io/2021/07/28/Linux%E3%80%81shell%E3%80%81c++%E7%9A%84%E4%B8%80%E4%BA%9Btips(%E5%AD%A6%E8%AF%84%E6%B5%8B%E6%97%B6%E9%81%87%E5%88%B0)/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux、shell、c++的一些tips(学评测时遇到)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-08-30 00:03:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/static-butterfly/dist/css/index.min.css"><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/08/29/rKpGAQTNLCwjJoO.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">3</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">2</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/08/29/eDFOCToJPbS7aBx.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">HiWoo's Blog</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linux、shell、c++的一些tips(学评测时遇到)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-07-28T09:55:06.000Z" title="Created 2021-07-28 17:55:06">2021-07-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-08-29T16:03:54.493Z" title="Updated 2021-08-30 00:03:54">2021-08-30</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Linux、shell、c++的一些tips(学评测时遇到)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h4 id="linux-ps"><a href="#linux-ps" class="headerlink" title="linux ps"></a>linux ps</h4><p>Linux中的ps命令是<strong>Process Status</strong>的缩写。ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，</p>
+<p>就是执行ps命令的那个时刻的那些进程，<strong>如果想要动态的显示进程信息，就可以使用top命令</strong>。</p>
+<h4 id="Linux-grep"><a href="#Linux-grep" class="headerlink" title="Linux grep"></a>Linux grep</h4><p><strong>Linux grep</strong> 命令用于查找文件里符合条件的字符串。</p>
+<p>grep 指令用于查找内容包含指定的范本样式的文件，如果发现某文件的内容符合所指定的范本样式，预设 grep 指令会把含有范本样式的那一列显示出来。若不指定任何文件名称，或是所给予的文件名为 -，则 grep 指令会从标准输入设备读取数据。</p>
+<p><strong>实例</strong></p>
+<p>在当前目录中，查找后缀有 file 字样的文件中包含 test 字符串的文件，并打印出该字符串的行。此时，可以使用如下命令：</p>
+<pre><code class="bash">grep test *file 
+</code></pre>
+<h4 id="shell-if-else"><a href="#shell-if-else" class="headerlink" title="shell if else"></a>shell if else</h4><p><strong>if else-if else</strong></p>
+<p>if else-if else 语法格式：</p>
+<pre><code class="bash">if condition1
+then
+    command1
+elif condition2 
+then 
+    command2
+else
+    commandN
+fi
+</code></pre>
+<h4 id="shell-for"><a href="#shell-for" class="headerlink" title="shell for"></a>shell for</h4><p><strong>for 循环</strong></p>
+<p>与其他编程语言类似，Shell支持for循环。</p>
+<p>for循环一般格式为：</p>
+<pre><code class="bash">for var in item1 item2 ... itemN
+do
+    command1
+    command2
+    ...
+    commandN
+done
+</code></pre>
+<h4 id="shell-let"><a href="#shell-let" class="headerlink" title="shell let"></a>shell let</h4><p>命令：let</p>
+<p>let 命令是 BASH 中用于计算的工具，用于执行一个或多个表达式，变量计算中不需要加上 $ 来表示变量。如果表达式中包含了空格或其他特殊字符，则必须引起来。</p>
+<p>语法格式</p>
+<pre><code class="bash">let arg [arg ...]
+</code></pre>
+<h4 id="shell"><a href="#shell" class="headerlink" title="shell $?"></a>shell $?</h4><p>函数返回值在调用该函数后通过 $? 来获得。</p>
+<h4 id="shell-双小括号"><a href="#shell-双小括号" class="headerlink" title="shell 双小括号(())"></a>shell 双小括号(())</h4><p>1）省略”$“进行算术运算，同时支持在括号内用“,”对多个表达式进行分割: </p>
+<p>2）$((exp)) 和expr exp效果相同，计算数学表达式exp的数值；计算逻辑运算（常用于算术运算比较，双括号中的变量可以不使用$，支持多个表达式用 ”,“ 来隔开）； </p>
+<p>3）支持跨进制运算： </p>
+<p>4）支持符合C语言运算规则的运算表达式，包括支持三目运算； </p>
+<h4 id="shell-n"><a href="#shell-n" class="headerlink" title="shell $n"></a>shell $n</h4><p>在Shell中，调用函数时可以向其传递参数。在函数体内部，通过 $n 的形式来获取参数的值，例如，$1表示第一个参数，$2表示第二个参数…注意，$10 不能获取第十个参数，获取第十个参数需要${10}。当n&gt;=10时，需要使用${n}来获取参数</p>
+<h4 id="linux-wc"><a href="#linux-wc" class="headerlink" title="linux wc"></a>linux wc</h4><p>Linux wc命令用于计算字数。</p>
+<p>利用wc指令我们可以计算文件的Byte数、字数、或是列数，若不指定文件名称、或是所给予的文件名为”-“，则wc指令会从标准输入设备读取数据。</p>
+<p><strong>语法</strong></p>
+<pre><code class="bash">wc [-clw][--help][--version][文件...]
+</code></pre>
+<p><strong>参数</strong>：</p>
+<ul>
+<li>-c或–bytes或–chars   只显示Bytes数。</li>
+<li>-l或–lines   显示行数。</li>
+<li>-w或–words   只显示字数。</li>
+<li>–help   在线帮助。</li>
+<li>–version   显示版本信息。</li>
+</ul>
+<h4 id="Here-Document"><a href="#Here-Document" class="headerlink" title="Here Document"></a>Here Document</h4><p>Here Document 是 Shell 中的一种特殊的重定向方式，用来将输入重定向到一个交互式 Shell 脚本或程序。 </p>
+<p>它的基本的形式如下：</p>
+<pre><code class="bash">command &lt;&lt; delimiter
+    document
+delimiter
+</code></pre>
+<p>它的作用是将两个 delimiter 之间的内容(document) 作为输入传递给 command。</p>
+<h4 id="shell-包含外部脚本"><a href="#shell-包含外部脚本" class="headerlink" title="shell 包含外部脚本"></a>shell 包含外部脚本</h4><p>和其他语言一样，Shell 也可以包含外部脚本。这样可以很方便的封装一些公用的代码作为一个独立的文件。</p>
+<p>Shell 文件包含的语法格式如下：</p>
+<pre><code class="bash">. filename   # 注意点号(.)和文件名中间有一空格
+
+或
+
+source filename
+</code></pre>
+<h4 id="shell-set"><a href="#shell-set" class="headerlink" title="shell set"></a>shell set</h4><p>set -e # Exit the script if an error happens</p>
+<p>脚本A </p>
+<p>set +e # don’t bail out of bash script if ccache doesn’t exist</p>
+<p>脚本B</p>
+<p>set -e # back to regular “bail out on error” mode</p>
+<p>脚本C</p>
+<p>在”set -e”之后出现的代码，一旦出现了返回值非零，整个脚本就会立即退出。</p>
+<p>set -e # Exit the script if an error happens</p>
+<p>脚本A </p>
+<p>set +e # don’t bail out of bash script if ccache doesn’t exist</p>
+<p>脚本B</p>
+<p>set -e # back to regular “bail out on error” mode</p>
+<p>脚本C</p>
+<p>如上面一个 脚本 shell ，</p>
+<p>A  和 C 中的 脚本 执行的时候 如果  出现了 返回值 为 非零 ，整个脚本 就会立即退出 </p>
+<p>B 脚本 中如果 出现了 返回值 为 非零 将 会 继续 执行 下面的 脚本 C 。</p>
+<h4 id="umount"><a href="#umount" class="headerlink" title="umount"></a>umount</h4><p>Linux umount（英文全拼：unmount）命令用于卸除文件系统。</p>
+<p>umount可卸除目前挂在Linux目录中的文件系统。</p>
+<p><strong>语法</strong></p>
+<pre><code class="bash">umount [-ahnrvV][-t &lt;文件系统类型&gt;][文件系统]
+</code></pre>
+<h4 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h4><p><a target="_blank" rel="noopener" href="https://www.baidu.com/s?wd=linux%E9%87%8D%E5%AE%9A%E5%90%91&tn=44039180_cpr&fenlei=mv6quAkxTZn0IZRqIHckPjm4nH00T1YkPWR1nvcYnWc4rA7-rjuW0ZwV5Hcvrjm3rH6sPfKWUMw85HfYnjn4nH6sgvPsT6KdThsqpZwYTjCEQLGCpyw9Uz4Bmy-bIi4WUvYETgN-TLwGUv3ErHbvPWDznHn">linux重定向</a>中&amp;&gt;和&gt;&amp;是一个意思，是“复制一个<a target="_blank" rel="noopener" href="https://www.baidu.com/s?wd=%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6&tn=44039180_cpr&fenlei=mv6quAkxTZn0IZRqIHckPjm4nH00T1YkPWR1nvcYnWc4rA7-rjuW0ZwV5Hcvrjm3rH6sPfKWUMw85HfYnjn4nH6sgvPsT6KdThsqpZwYTjCEQLGCpyw9Uz4Bmy-bIi4WUvYETgN-TLwGUv3ErHbvPWDznHn">文件描述符</a>”的意思。</p>
+<h4 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h4><p>| 表示管道，上一条命令的输出，作为下一条命令参数，如 echo ‘yes’ | wc -l</p>
+<p>|| 表示上一条命令执行失败后，才执行下一条命令，如 cat nofile || echo “fail”</p>
+<h4 id="trap"><a href="#trap" class="headerlink" title="trap"></a>trap</h4><p>trap 的使用 </p>
+<p> 运行格式</p>
+<p> trap命令的参数分为两部分，前一部分是接收到指定信号时将要采取的行动，后一部分是要处理的信号名。</p>
+<p> trap command signal</p>
+<h4 id="lsb-release"><a href="#lsb-release" class="headerlink" title="lsb_release"></a>lsb_release</h4><p>我们有时候需要通过查看当前的Linux系统中，关于系统的一些信息：例如版本、描述等，可以使用lsb_release命令，lsb是：Linux Standard Base</p>
+<h4 id="dpkg"><a href="#dpkg" class="headerlink" title="dpkg"></a>dpkg</h4><p>dpkg是Debian的包管理器，因为Ubuntu是Debian的变体，在Ubuntu下也有这个工具。</p>
+<p>两个常用的命令是：</p>
+<p>dpkg -i package-file和dpkg -r package</p>
+<p>分别表示安装和移除软件包。</p>
+<p>这里说一下architecture的问题，一个编译好的软件是与操作系统类型，cpu架构都有关的。这个architecture就是cpu的体系结构。</p>
+<h4 id><a href="#" class="headerlink" title="$"></a>$</h4><ol>
+<li><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$0</td>
+<td>当前脚本的文件名</td>
+</tr>
+<tr>
+<td>$n</td>
+<td>传递给脚本或函数的参数。n 是一个数字，表示第几个参数。例如，第一个参数是$1，第二个参数是$2。</td>
+</tr>
+<tr>
+<td>$#</td>
+<td>传递给脚本或函数的参数个数。</td>
+</tr>
+<tr>
+<td>$*</td>
+<td>传递给脚本或函数的所有参数。</td>
+</tr>
+<tr>
+<td>$@</td>
+<td>传递给脚本或函数的所有参数。被双引号(“ “)包含时，与 $* 稍有不同，下面将会讲到。</td>
+</tr>
+<tr>
+<td>$?</td>
+<td>上个命令的退出状态，或函数的返回值。</td>
+</tr>
+<tr>
+<td>$$</td>
+<td>当前Shell进程ID。对于 Shell 脚本，就是这些脚本所在的进程ID。</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<h4 id="getopts"><a href="#getopts" class="headerlink" title="getopts"></a>getopts</h4><pre><code class="bash"># Read command-line parameters:
+while getopts &#39;a:d:i:r:l:M:R:yh&#39; OPT ; do
+    case $OPT in
+        a) ARCH=$OPTARG ;;
+        d) CHROOTDIR=$OPTARG ;;
+        R) RELEASE=$OPTARG ;;
+        i) INSTALLDEBS_EXTRA=$OPTARG ;;
+        r) REMOVEDEBS_EXTRA=$OPTARG ;;
+        l) LOCALDEBS=$OPTARG ;;
+        M) DEBMIRROR=$OPTARG ;;
+        y) FORCEYES=1 ;;
+        h) SHOWHELP=1 ;;
+        \?) error &quot;Could not parse options.&quot; ;;
+    esac
+done
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012703795/article/details/46124519?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-0&spm=1001.2101.3001.4242">shell getopts用法详解</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xupeizhi/archive/2013/02/18/2915659.html">     shell–getopts        </a>         </p>
+<p>在写sh脚本的时候，常常需要运行时输入一些数据。基本的$*，执行的情况，大概就是$0 $1 $2 $3…… 那么，那些系统命令里的参数又是怎么做出来的呢？我们自己的脚本如何搞出来$0-$1的效果呢？这就是getopts的作用了。</p>
+<p>在使用getopts命令的时候，shell会自动产生两个变量OPTIND和OPTARG。</p>
+<p>OPTIND初始值为1，其含义是下一个待处理的参数的索引。只要存在，getopts命令返回true，所以一般getopts命令使用while循环；</p>
+<p>OPTARG是当getopts获取到其期望的参数后存入的位置。而如果不在其期望内，则$optname被设为?并将该意外值存入OPTARG； 如果​$optname需要拥有具体设置值而实际却没有，则$optname被设为:并将丢失设置值的optname存入OPTARG；</p>
+<p>对于$optname，可以用后标:来表示是否需要值；而前标:则表示是否开启静默模式。</p>
+<h4 id="shift"><a href="#shift" class="headerlink" title="shift"></a>shift</h4><p>位置参数可以用<code>shift</code>命令左移。比如<code>shift 3</code>表示原来的<code>$4</code>现在变成<code>$1</code>，原来的<code>$5</code>现在变成<code>$2</code>等等，原来的<code>$1</code>、<code>$2</code>、<code>$3</code>丢弃，<code>$0</code>不移动。不带参数的<code>shift</code>命令相当于<code>shift 1</code>。</p>
+<p>非常有用的 Unix 命令:shift。我们知道，对于位置变量或命令行参数，其个数必须是确定的，或者当  Shell 程序不知道其个数时，可以把所有参数一起赋值给变量$*。若用户要求 Shell  在不知道位置变量个数的情况下，还能逐个的把参数一一处理，也就是在 $1 后为 $2,在 ​$2 后面为 $3 等。在 shift 命令执行前变量  $1 的值在 shift 命令执行后就不可用了。</p>
+<h4 id="判断root权限"><a href="#判断root权限" class="headerlink" title="判断root权限"></a>判断root权限</h4><p>shell判断是否为root权限（id -u != 0）</p>
+<h4 id="amp-amp-和"><a href="#amp-amp-和" class="headerlink" title="&amp;&amp; 和 ||"></a>&amp;&amp; 和 ||</h4><p>&amp;&amp;：用来执行条件成立后执行的命令<br>||：用来执行条件不成立后的执行命令</p>
+<h4 id="linux-tr"><a href="#linux-tr" class="headerlink" title="linux tr"></a>linux tr</h4><p>Linux tr 命令用于转换或删除文件中的字符。</p>
+<p>tr 指令从标准输入设备读取数据，经过字符串转译后，将结果输出到标准输出设备。</p>
+<h4 id="linux-export"><a href="#linux-export" class="headerlink" title="linux export"></a>linux export</h4><p>Linux export 命令用于设置或显示环境变量。</p>
+<p>在 shell 中执行程序时，shell 会提供一组环境变量。export 可新增，修改或删除环境变量，供后续执行的程序使用。export 的效力仅限于该次登陆操作。</p>
+<h4 id="mkdir-p"><a href="#mkdir-p" class="headerlink" title="mkdir -p"></a>mkdir -p</h4><p>递归创建目录，即使上级目录不存在，会按目录层级自动创建目录</p>
+<h4 id="Linux-系统目录结构"><a href="#Linux-系统目录结构" class="headerlink" title="Linux  系统目录结构"></a>Linux  系统目录结构</h4><p><a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-system-contents.html">Linux  系统目录结构</a></p>
+<h4 id="apt-amp-wget"><a href="#apt-amp-wget" class="headerlink" title="apt &amp; wget"></a>apt &amp; wget</h4><p><strong>apt 是一个<a target="_blank" rel="noopener" href="https://www.linuxcool.com/">命令</a>行实用程序，用于在 Ubuntu ， Debian 和相关 <a target="_blank" rel="noopener" href="https://www.linuxprobe.com/">Linux</a> 发行版上安装，更新，删除和管理 deb 包。它是 apt-get 和 apt-cache 工具的最常用<a target="_blank" rel="noopener" href="https://www.linuxcool.com/">命令</a>和选项的组合。</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.linuxprobe.com/linux-apt.html">Linux 中使用 apt 命令</a></p>
+<p><strong>wget命令</strong>用来从指定的URL下载文件。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34765864/article/details/91490766">Linux wget命令</a></p>
+<h4 id="zcat"><a href="#zcat" class="headerlink" title="zcat"></a>zcat</h4><p> 显示压缩包中文件的内容</p>
+<h4 id="Linux-tar"><a href="#Linux-tar" class="headerlink" title="Linux tar"></a>Linux tar</h4><p>Linux tar（英文全拼：tape archive ）命令用于备份文件。</p>
+<p> tar 是用来建立，还原备份文件的工具程序，它可以加入，解开备份文件内的文件。</p>
+<h4 id="Linux-eval"><a href="#Linux-eval" class="headerlink" title="Linux eval"></a>Linux eval</h4><p>Linux eval命令用于重新运算求出参数的内容。</p>
+<p> eval可读取一连串的参数，然后再依参数本身的特性来执行。</p>
+<h4 id="Linux-cp"><a href="#Linux-cp" class="headerlink" title="Linux cp"></a>Linux cp</h4><p>Linux cp（英文全拼：copy file）命令主要用于复制文件或目录。</p>
+<p><strong>语法</strong></p>
+<pre><code class="bash"> cp [options] source dest
+</code></pre>
+<p> 或</p>
+<pre><code class="bash"> cp [options] source... directory
+</code></pre>
+<h4 id="Linux-useradd"><a href="#Linux-useradd" class="headerlink" title="Linux useradd"></a>Linux useradd</h4><p>Linux useradd 命令用于建立用户帐号。</p>
+<h4 id="aufs"><a href="#aufs" class="headerlink" title="aufs"></a>aufs</h4><p>aufs (another union file system), 从名字上就可以看出， 它的作用是合并几个文件夹到一个目录中，  使得这些文件夹（分散或者不是分散的）合并到同一个目录中。更神奇的是， 可以改变文件夹的属性， 将只读的变成可写（只是看起来可写，  修改的东西被保存在另外的地方， 不会对原来的只读文件夹造成损害。</p>
+<h4 id="cgroups"><a href="#cgroups" class="headerlink" title="cgroups"></a>cgroups</h4><p>cgroups(Control Groups) 是 linux  内核提供的一种机制，这种机制可以根据需求把一系列系统任务及其子任务整合(或分隔)到按资源划分等级的不同组内，从而为系统资源管理提供一个统一的框架。简单说，cgroups 可以限制、记录任务组所使用的物理资源。本质上来说，cgroups  是内核附加在程序上的一系列钩子(hook)，通过程序运行时对资源的调度触发相应的钩子以达到资源追踪和限制的目的。</p>
+<h4 id="Linux下实现C-操作Mysql数据库"><a href="#Linux下实现C-操作Mysql数据库" class="headerlink" title="Linux下实现C++操作Mysql数据库"></a>Linux下实现C++操作Mysql数据库</h4><p><a target="_blank" rel="noopener" href="https://www.jb51.net/article/114992.htm">Linux下实现C++操作Mysql数据库</a></p>
+<h4 id="Makefile教程"><a href="#Makefile教程" class="headerlink" title="Makefile教程"></a>Makefile教程</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/haoel/article/details/2886">Makefile教程</a></p>
+<h4 id="JSON字符串"><a href="#JSON字符串" class="headerlink" title="JSON字符串:"></a>JSON字符串:</h4><p>  var str1 = ‘{ “name”: “cxh”, “sex”: “man” }’;<br>  JSON对象:<br>  var str2 = { “name”: “cxh”, “sex”: “man” };</p>
+<p>拿到源代码的text 怎么扔进chroot 还有runguard？接口？文件操作？</p>
+<p>各种评测脚本是如何生成的 和执行</p>
+<h4 id="编译带rabbitmq的文件"><a href="#编译带rabbitmq的文件" class="headerlink" title="编译带rabbitmq的文件"></a>编译带rabbitmq的文件</h4><p>g++ -o main main.cpp rabbitmqclient.cpp -lrabbitmq</p>
+<h4 id="重定向编译"><a href="#重定向编译" class="headerlink" title="重定向编译"></a>重定向编译</h4><p>g++ -o test test.cpp</p>
+<p>sudo ./test &lt; ./test.in &gt; ./test.out</p>
+<h4 id="linux权限"><a href="#linux权限" class="headerlink" title="linux权限"></a>linux权限</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42269817/article/details/106770434">Linux 中的权限 – 0666 和 0777</a></p>
+<p>Linux 系统中采用三位十进制数表示权限，如0755， 0644.<br> ABCD<br> A- 0， 表示十进制<br> B－用户<br> C－组用户<br> D－其他用户</p>
+<p> —  -&gt; 0  (no excute , no write ,no read)<br> –x  -&gt; 1  excute, (no write, no read)<br> -w-  -&gt; 2  write<br> -wx  -&gt; 3  write, excute<br> r–  -&gt; 4  read<br> r-x  -&gt; 5  read, excute<br> rw-  -&gt; 6  read, write ,<br> rwx  -&gt; 7  read, write , excute</p>
+<h4 id="Overlayfs"><a href="#Overlayfs" class="headerlink" title="Overlayfs"></a>Overlayfs</h4><p>Overlayfs是一种类似aufs的一种堆叠文件系统,并不直接参与磁盘空间结构的划分，仅仅将原来底层文件系统中不同的目录进行“合并”，然后向用户呈现。因此对于用户来说，它所见到的overlay文件系统根目录下的内容就来自挂载时所指定的不同目录的“合集”。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/luckyapple1028/article/details/77916194">深入理解overlayfs</a></p>
+<h4 id="Linux下动态库-so-和静态库-a-的区别"><a href="#Linux下动态库-so-和静态库-a-的区别" class="headerlink" title="Linux下动态库(.so)和静态库(.a) 的区别"></a>Linux下动态库(.so)和静态库(.a) 的区别</h4><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1344879">Linux下动态库(.so)和静态库(.a) 的区别</a></p>
+<p> 二者的不同点在于代码被载入的时刻不同。</p>
+<p> 静态库的代码在编译过程中已经被载入可执行程序,因此体积比较大。</p>
+<p> 动态库(共享库)的代码在可执行程序运行时才载入内存，在编译过程中仅简单的引用，因此代码体积比较小。</p>
+<p> 不同的应用程序如果调用相同的库,那么在内存中只需要有一份该动态库(共享库)的实例。</p>
+<p> 静态库和动态库的最大区别,静态情况下,把库直接加载到程序中,而动态库链接的时候,它只是保留接口,将动态库与程序代码独立,这样就可以提高代码的可复用度，和降低程序的耦合度。</p>
+<p> 静态库在程序编译时会被连接到目标代码中，<strong>程序运行时将不再需要该静态库</strong>。</p>
+<p> 动态库在程序编译时并不会被连接到目标代码中，而是在<strong>程序运行是才被载入，因此在程序运行时还需要动态库存在</strong></p>
+<h4 id="mount"><a href="#mount" class="headerlink" title="mount"></a>mount</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xingmuxin/p/8446115.html">mount –bind使用方法</a></p>
+<p>我们可以通过mount –bind命令来将两个目录连接起来，mount –bind命令是将前一个目录挂载到后一个目录上，所有对后一个目录的访问其实都是对前一个目录的访问</p>
+<p><a target="_blank" rel="noopener" href="http://www.jinbuguo.com/man/mount.html">mount 中文手册</a></p>
+<h4 id="Cgroup系列"><a href="#Cgroup系列" class="headerlink" title="Cgroup系列"></a>Cgroup系列</h4><h5 id="Linux-Cgroup系列（01）：Cgroup概述"><a href="#Linux-Cgroup系列（01）：Cgroup概述" class="headerlink" title="Linux Cgroup系列（01）：Cgroup概述"></a><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000006917884">Linux Cgroup系列（01）：Cgroup概述</a></h5><h5 id="Linux-Cgroup系列（02）：创建并管理cgroup"><a href="#Linux-Cgroup系列（02）：创建并管理cgroup" class="headerlink" title="Linux Cgroup系列（02）：创建并管理cgroup"></a><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000007241437">Linux Cgroup系列（02）：创建并管理cgroup</a></h5><h5 id="Linux-Cgroup系列（03）：限制cgroup的进程数（subsystem之pids）"><a href="#Linux-Cgroup系列（03）：限制cgroup的进程数（subsystem之pids）" class="headerlink" title="Linux Cgroup系列（03）：限制cgroup的进程数（subsystem之pids）"></a><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000007468509">Linux Cgroup系列（03）：限制cgroup的进程数（subsystem之pids）</a></h5><h5 id="Linux-Cgroup系列（04）：限制cgroup的内存使用（subsystem之memory）"><a href="#Linux-Cgroup系列（04）：限制cgroup的内存使用（subsystem之memory）" class="headerlink" title="Linux Cgroup系列（04）：限制cgroup的内存使用（subsystem之memory）"></a><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000008125359">Linux Cgroup系列（04）：限制cgroup的内存使用（subsystem之memory）</a></h5><h5 id="Linux-Cgroup系列（05）：限制cgroup的CPU使用（subsystem之cpu）"><a href="#Linux-Cgroup系列（05）：限制cgroup的CPU使用（subsystem之cpu）" class="headerlink" title="Linux Cgroup系列（05）：限制cgroup的CPU使用（subsystem之cpu）"></a><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000008323952">Linux Cgroup系列（05）：限制cgroup的CPU使用（subsystem之cpu）</a></h5><h4 id="C-库函数-int-snprintf"><a href="#C-库函数-int-snprintf" class="headerlink" title="C 库函数 int snprintf"></a>C 库函数 int snprintf</h4><p>C 库函数 <strong>int snprintf(char *str, size_t size, const char *format, …)</strong> 设将可变参数(…)按照 format 格式化成字符串，并将字符串复制到 str 中，size 为要写入的字符的最大数目，超过 size 会被截断。</p>
+<h4 id="C库函数fscanf"><a href="#C库函数fscanf" class="headerlink" title="C库函数fscanf"></a>C库函数fscanf</h4><p><strong>描述</strong></p>
+<p>C 库函数 <strong>int fscanf(FILE *stream, const char *format, …)</strong> 从流 stream 读取格式化输入。</p>
+<p><strong>声明</strong></p>
+<p>下面是 fscanf() 函数的声明。</p>
+<pre><code class="c">int fscanf(FILE *stream, const char *format, ...)
+</code></pre>
+<h4 id="C-库函数-rewind"><a href="#C-库函数-rewind" class="headerlink" title="C 库函数 rewind"></a>C 库函数 rewind</h4><p>C 库函数 <strong>void rewind(FILE *stream)</strong> 设置文件位置为给定流 <strong>stream</strong> 的文件的开头。</p>
+<h4 id="C-多线程thread-join"><a href="#C-多线程thread-join" class="headerlink" title="C++多线程thread join"></a>C++多线程thread join</h4><p>多线程<a target="_blank" rel="noopener" href="https://www.cnblogs.com/adorkable/p/12722209.html">C++ std::thread join()的理解</a></p>
+<h4 id="shell-d-f-e判断表达式"><a href="#shell-d-f-e判断表达式" class="headerlink" title="shell -d -f -e判断表达式"></a>shell -d -f -e判断表达式</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34457768/article/details/79387779">linux shell 指令 诸如-d, -f, -e之类的判断表达式</a></p>
+<h4 id="shell-cat"><a href="#shell-cat" class="headerlink" title="shell cat"></a>shell cat</h4><p>cat（英文全拼：concatenate）命令用于连接文件并打印到标准输出设备上。</p>
+<p><strong>语法格式</strong></p>
+<pre><code>cat [-AbeEnstTuv] [--help] [--version] fileName
+</code></pre>
+<p><strong>参数说明：</strong></p>
+<p><strong>-n 或 –number</strong>：由 1 开始对所有输出的行数编号。</p>
+<p><strong>-b 或 –number-nonblank</strong>：和 -n 相似，只不过对于空白行不编号。</p>
+<p><strong>-s 或 –squeeze-blank</strong>：当遇到有连续两行以上的空白行，就代换为一行的空白行。</p>
+<p><strong>-v 或 –show-nonprinting</strong>：使用 ^ 和 M- 符号，除了 LFD 和 TAB 之外。</p>
+<p><strong>-E 或 –show-ends</strong> : 在每行结束处显示 $。</p>
+<p><strong>-T 或 –show-tabs</strong>: 将 TAB 字符显示为 ^I。</p>
+<p><strong>-A, –show-all</strong>：等价于 -vET。</p>
+<p><strong>-e：</strong>等价于”-vE”选项；</p>
+<p><strong>-t：</strong>等价于”-vT”选项；</p>
+<p><strong>实例：</strong></p>
+<p>把 textfile1 的文档内容加上行号后输入 textfile2 这个文档里：</p>
+<pre><code>cat -n textfile1 &gt; textfile2
+</code></pre>
+<p> 把 textfile1 和 textfile2 的文档内容加上行号（空白行不加）之后将内容附加到 textfile3 文档里：</p>
+<pre><code>cat -b textfile1 textfile2 &gt;&gt; textfile3
+</code></pre>
+<p>清空 /etc/test.txt 文档内容：</p>
+<pre><code>cat /dev/null &gt; /etc/test.txt
+</code></pre>
+<p>cat 也可以用来制作镜像文件。例如要制作软盘的镜像文件，将软盘放好后输入：</p>
+<pre><code>cat /dev/fd0 &gt; OUTFILE
+</code></pre>
+<p>相反的，如果想把 image file 写到软盘，输入：</p>
+<pre><code>cat IMG_FILE &gt; /dev/fd0
+</code></pre>
+<h4 id="linux-shell-gt-、-gt-gt"><a href="#linux-shell-gt-、-gt-gt" class="headerlink" title="linux shell &gt;、 &gt;&gt;"></a>linux shell &gt;、 &gt;&gt;</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhenghongxin/p/7029173.html">linux shell中”2&gt;&amp;1”含义</a></p>
+<p>linux中&gt;表示覆盖原文件内容（文件的日期也会自动更新），&gt;&gt;表示追加内容（会另起一行，文件的日期也会自动更新）。</p>
+<h4 id="shell-exec"><a href="#shell-exec" class="headerlink" title="shell exec"></a>shell exec</h4><p>exec: 重定向</p>
+<p>​            exec &gt;&gt;compile.out 2&gt;&amp;1 把标准输入输出重定向到compile.out</p>
+<h4 id="linux-bash-shell之变量替换：-句法、-句法、-句法、-句法、-句法、-句法、-句法、-句法"><a href="#linux-bash-shell之变量替换：-句法、-句法、-句法、-句法、-句法、-句法、-句法、-句法" class="headerlink" title="linux bash shell之变量替换：:=句法、=句法、:-句法、-句法、=?句法、?句法、:+句法、+句法"></a>linux bash shell之变量替换：:=句法、=句法、:-句法、-句法、=?句法、?句法、:+句法、+句法</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/fhefh/archive/2011/04/22/2024750.html">linux bash shell之变量替换：:=句法、=句法、:-句法、-句法、=?句法、?句法、:+句法、+句法</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">HiWoo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://huanghy95.github.io/2021/07/28/Linux%E3%80%81shell%E3%80%81c++%E7%9A%84%E4%B8%80%E4%BA%9Btips(%E5%AD%A6%E8%AF%84%E6%B5%8B%E6%97%B6%E9%81%87%E5%88%B0)/">https://huanghy95.github.io/2021/07/28/Linux%E3%80%81shell%E3%80%81c++%E7%9A%84%E4%B8%80%E4%BA%9Btips(%E5%AD%A6%E8%AF%84%E6%B5%8B%E6%97%B6%E9%81%87%E5%88%B0)/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%9F%A5%E8%AF%86%E6%94%B6%E9%9B%86/">知识收集</a></div><div class="post_share"><div class="addthis_inline_share_toolbox"></div><script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=null" async="async"></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/05/22/%E5%88%A9%E7%94%A8UDP%E5%AE%9E%E7%8E%B0%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93/"><img class="next-cover" src="https://i.loli.net/2021/08/29/eDFOCToJPbS7aBx.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">利用UDP实现可靠传输</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/08/29/rKpGAQTNLCwjJoO.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">HiWoo</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">3</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">2</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/huanghy95"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">Welcome to my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#linux-ps"><span class="toc-number">1.</span> <span class="toc-text">linux ps</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux-grep"><span class="toc-number">2.</span> <span class="toc-text">Linux grep</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#shell-if-else"><span class="toc-number">3.</span> <span class="toc-text">shell if else</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#shell-for"><span class="toc-number">4.</span> <span class="toc-text">shell for</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#shell-let"><span class="toc-number">5.</span> <span class="toc-text">shell let</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#shell"><span class="toc-number">6.</span> <span class="toc-text">shell $?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#shell-%E5%8F%8C%E5%B0%8F%E6%8B%AC%E5%8F%B7"><span class="toc-number">7.</span> <span class="toc-text">shell 双小括号(())</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#shell-n"><span class="toc-number">8.</span> <span class="toc-text">shell $n</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#linux-wc"><span class="toc-number">9.</span> <span class="toc-text">linux wc</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Here-Document"><span class="toc-number">10.</span> <span class="toc-text">Here Document</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#shell-%E5%8C%85%E5%90%AB%E5%A4%96%E9%83%A8%E8%84%9A%E6%9C%AC"><span class="toc-number">11.</span> <span class="toc-text">shell 包含外部脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#shell-set"><span class="toc-number">12.</span> <span class="toc-text">shell set</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#umount"><span class="toc-number">13.</span> <span class="toc-text">umount</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">14.</span> <span class="toc-text">重定向</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%A1%E9%81%93"><span class="toc-number">15.</span> <span class="toc-text">管道</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#trap"><span class="toc-number">16.</span> <span class="toc-text">trap</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#lsb-release"><span class="toc-number">17.</span> <span class="toc-text">lsb_release</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dpkg"><span class="toc-number">18.</span> <span class="toc-text">dpkg</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">19.</span> <span class="toc-text">$</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getopts"><span class="toc-number">20.</span> <span class="toc-text">getopts</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#shift"><span class="toc-number">21.</span> <span class="toc-text">shift</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%ADroot%E6%9D%83%E9%99%90"><span class="toc-number">22.</span> <span class="toc-text">判断root权限</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#amp-amp-%E5%92%8C"><span class="toc-number">23.</span> <span class="toc-text">&amp;&amp; 和 ||</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#linux-tr"><span class="toc-number">24.</span> <span class="toc-text">linux tr</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#linux-export"><span class="toc-number">25.</span> <span class="toc-text">linux export</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mkdir-p"><span class="toc-number">26.</span> <span class="toc-text">mkdir -p</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux-%E7%B3%BB%E7%BB%9F%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">27.</span> <span class="toc-text">Linux  系统目录结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#apt-amp-wget"><span class="toc-number">28.</span> <span class="toc-text">apt &amp; wget</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#zcat"><span class="toc-number">29.</span> <span class="toc-text">zcat</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux-tar"><span class="toc-number">30.</span> <span class="toc-text">Linux tar</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux-eval"><span class="toc-number">31.</span> <span class="toc-text">Linux eval</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux-cp"><span class="toc-number">32.</span> <span class="toc-text">Linux cp</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux-useradd"><span class="toc-number">33.</span> <span class="toc-text">Linux useradd</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#aufs"><span class="toc-number">34.</span> <span class="toc-text">aufs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cgroups"><span class="toc-number">35.</span> <span class="toc-text">cgroups</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux%E4%B8%8B%E5%AE%9E%E7%8E%B0C-%E6%93%8D%E4%BD%9CMysql%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">36.</span> <span class="toc-text">Linux下实现C++操作Mysql数据库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Makefile%E6%95%99%E7%A8%8B"><span class="toc-number">37.</span> <span class="toc-text">Makefile教程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JSON%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">38.</span> <span class="toc-text">JSON字符串:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%B8%A6rabbitmq%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">39.</span> <span class="toc-text">编译带rabbitmq的文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91%E7%BC%96%E8%AF%91"><span class="toc-number">40.</span> <span class="toc-text">重定向编译</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#linux%E6%9D%83%E9%99%90"><span class="toc-number">41.</span> <span class="toc-text">linux权限</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Overlayfs"><span class="toc-number">42.</span> <span class="toc-text">Overlayfs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux%E4%B8%8B%E5%8A%A8%E6%80%81%E5%BA%93-so-%E5%92%8C%E9%9D%99%E6%80%81%E5%BA%93-a-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">43.</span> <span class="toc-text">Linux下动态库(.so)和静态库(.a) 的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mount"><span class="toc-number">44.</span> <span class="toc-text">mount</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Cgroup%E7%B3%BB%E5%88%97"><span class="toc-number">45.</span> <span class="toc-text">Cgroup系列</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Linux-Cgroup%E7%B3%BB%E5%88%97%EF%BC%8801%EF%BC%89%EF%BC%9ACgroup%E6%A6%82%E8%BF%B0"><span class="toc-number">45.1.</span> <span class="toc-text">Linux Cgroup系列（01）：Cgroup概述</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Linux-Cgroup%E7%B3%BB%E5%88%97%EF%BC%8802%EF%BC%89%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%B9%B6%E7%AE%A1%E7%90%86cgroup"><span class="toc-number">45.2.</span> <span class="toc-text">Linux Cgroup系列（02）：创建并管理cgroup</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Linux-Cgroup%E7%B3%BB%E5%88%97%EF%BC%8803%EF%BC%89%EF%BC%9A%E9%99%90%E5%88%B6cgroup%E7%9A%84%E8%BF%9B%E7%A8%8B%E6%95%B0%EF%BC%88subsystem%E4%B9%8Bpids%EF%BC%89"><span class="toc-number">45.3.</span> <span class="toc-text">Linux Cgroup系列（03）：限制cgroup的进程数（subsystem之pids）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Linux-Cgroup%E7%B3%BB%E5%88%97%EF%BC%8804%EF%BC%89%EF%BC%9A%E9%99%90%E5%88%B6cgroup%E7%9A%84%E5%86%85%E5%AD%98%E4%BD%BF%E7%94%A8%EF%BC%88subsystem%E4%B9%8Bmemory%EF%BC%89"><span class="toc-number">45.4.</span> <span class="toc-text">Linux Cgroup系列（04）：限制cgroup的内存使用（subsystem之memory）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Linux-Cgroup%E7%B3%BB%E5%88%97%EF%BC%8805%EF%BC%89%EF%BC%9A%E9%99%90%E5%88%B6cgroup%E7%9A%84CPU%E4%BD%BF%E7%94%A8%EF%BC%88subsystem%E4%B9%8Bcpu%EF%BC%89"><span class="toc-number">45.5.</span> <span class="toc-text">Linux Cgroup系列（05）：限制cgroup的CPU使用（subsystem之cpu）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%BA%93%E5%87%BD%E6%95%B0-int-snprintf"><span class="toc-number">46.</span> <span class="toc-text">C 库函数 int snprintf</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C%E5%BA%93%E5%87%BD%E6%95%B0fscanf"><span class="toc-number">47.</span> <span class="toc-text">C库函数fscanf</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%BA%93%E5%87%BD%E6%95%B0-rewind"><span class="toc-number">48.</span> <span class="toc-text">C 库函数 rewind</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%A4%9A%E7%BA%BF%E7%A8%8Bthread-join"><span class="toc-number">49.</span> <span class="toc-text">C++多线程thread join</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#shell-d-f-e%E5%88%A4%E6%96%AD%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">50.</span> <span class="toc-text">shell -d -f -e判断表达式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#shell-cat"><span class="toc-number">51.</span> <span class="toc-text">shell cat</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#linux-shell-gt-%E3%80%81-gt-gt"><span class="toc-number">52.</span> <span class="toc-text">linux shell &gt;、 &gt;&gt;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#shell-exec"><span class="toc-number">53.</span> <span class="toc-text">shell exec</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#linux-bash-shell%E4%B9%8B%E5%8F%98%E9%87%8F%E6%9B%BF%E6%8D%A2%EF%BC%9A-%E5%8F%A5%E6%B3%95%E3%80%81-%E5%8F%A5%E6%B3%95%E3%80%81-%E5%8F%A5%E6%B3%95%E3%80%81-%E5%8F%A5%E6%B3%95%E3%80%81-%E5%8F%A5%E6%B3%95%E3%80%81-%E5%8F%A5%E6%B3%95%E3%80%81-%E5%8F%A5%E6%B3%95%E3%80%81-%E5%8F%A5%E6%B3%95"><span class="toc-number">54.</span> <span class="toc-text">linux bash shell之变量替换：:&#x3D;句法、&#x3D;句法、:-句法、-句法、&#x3D;?句法、?句法、:+句法、+句法</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/07/28/Linux%E3%80%81shell%E3%80%81c++%E7%9A%84%E4%B8%80%E4%BA%9Btips(%E5%AD%A6%E8%AF%84%E6%B5%8B%E6%97%B6%E9%81%87%E5%88%B0)/" title="Linux、shell、c++的一些tips(学评测时遇到)"><img src="https://i.loli.net/2021/08/29/eDFOCToJPbS7aBx.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux、shell、c++的一些tips(学评测时遇到)"/></a><div class="content"><a class="title" href="/2021/07/28/Linux%E3%80%81shell%E3%80%81c++%E7%9A%84%E4%B8%80%E4%BA%9Btips(%E5%AD%A6%E8%AF%84%E6%B5%8B%E6%97%B6%E9%81%87%E5%88%B0)/" title="Linux、shell、c++的一些tips(学评测时遇到)">Linux、shell、c++的一些tips(学评测时遇到)</a><time datetime="2021-07-28T09:55:06.000Z" title="Created 2021-07-28 17:55:06">2021-07-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/22/%E5%88%A9%E7%94%A8UDP%E5%AE%9E%E7%8E%B0%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93/" title="利用UDP实现可靠传输"><img src="https://i.loli.net/2021/08/29/eDFOCToJPbS7aBx.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用UDP实现可靠传输"/></a><div class="content"><a class="title" href="/2021/05/22/%E5%88%A9%E7%94%A8UDP%E5%AE%9E%E7%8E%B0%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93/" title="利用UDP实现可靠传输">利用UDP实现可靠传输</a><time datetime="2021-05-22T09:55:06.000Z" title="Created 2021-05-22 17:55:06">2021-05-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/10/%E5%88%A9%E7%94%A8Pthread%E3%80%81OpenMP%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86TSP%E9%97%AE%E9%A2%98/" title="利用Pthread、OpenMP并行处理TSP问题"><img src="https://i.loli.net/2021/08/29/eDFOCToJPbS7aBx.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用Pthread、OpenMP并行处理TSP问题"/></a><div class="content"><a class="title" href="/2021/05/10/%E5%88%A9%E7%94%A8Pthread%E3%80%81OpenMP%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86TSP%E9%97%AE%E9%A2%98/" title="利用Pthread、OpenMP并行处理TSP问题">利用Pthread、OpenMP并行处理TSP问题</a><time datetime="2021-05-10T05:56:01.000Z" title="Created 2021-05-10 13:56:01">2021-05-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By HiWoo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
