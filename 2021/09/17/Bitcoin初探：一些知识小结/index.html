@@ -1,0 +1,242 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bitcoin初探：一些知识小结 | HiWoo's Blog</title><meta name="keywords" content="区块链"><meta name="author" content="HiWoo"><meta name="copyright" content="HiWoo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="这段时间看论文时碰到的一些关于比特币的知识概念，记一下  名词理解1.1 拜占庭容错系统拜占庭将军问题：寻找一个方法，使得将军们能在一个有叛徒的非信任环境中建立对战斗计划的共识。共识算法的核心是在正常的节点间形成对网络状态的共识。共识算法协议的属性：1）一致性：所有的非缺陷进程必须同意同一个值2）正确性：如果所有的非缺陷进程有相同的初始值，那么所有的非缺陷进行所同意的值是同一个初始值。3）可结束">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bitcoin初探：一些知识小结">
+<meta property="og:url" content="https://huanghy95.github.io/2021/09/17/Bitcoin%E5%88%9D%E6%8E%A2%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/index.html">
+<meta property="og:site_name" content="HiWoo&#39;s Blog">
+<meta property="og:description" content="这段时间看论文时碰到的一些关于比特币的知识概念，记一下  名词理解1.1 拜占庭容错系统拜占庭将军问题：寻找一个方法，使得将军们能在一个有叛徒的非信任环境中建立对战斗计划的共识。共识算法的核心是在正常的节点间形成对网络状态的共识。共识算法协议的属性：1）一致性：所有的非缺陷进程必须同意同一个值2）正确性：如果所有的非缺陷进程有相同的初始值，那么所有的非缺陷进行所同意的值是同一个初始值。3）可结束">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/09/23/WaKxv5CdzknVbow.jpg">
+<meta property="article:published_time" content="2021-09-17T15:30:36.000Z">
+<meta property="article:modified_time" content="2021-09-23T15:37:59.305Z">
+<meta property="article:author" content="HiWoo">
+<meta property="article:tag" content="区块链">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/09/23/WaKxv5CdzknVbow.jpg"><link rel="shortcut icon" href="https://i.loli.net/2021/08/29/rKpGAQTNLCwjJoO.jpg"><link rel="canonical" href="https://huanghy95.github.io/2021/09/17/Bitcoin%E5%88%9D%E6%8E%A2%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Bitcoin初探：一些知识小结',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-09-23 23:37:59'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/static-butterfly/dist/css/index.min.css"><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/08/29/rKpGAQTNLCwjJoO.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">7</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">4</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/09/23/WaKxv5CdzknVbow.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">HiWoo's Blog</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Bitcoin初探：一些知识小结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-09-17T15:30:36.000Z" title="Created 2021-09-17 23:30:36">2021-09-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-09-23T15:37:59.305Z" title="Updated 2021-09-23 23:37:59">2021-09-23</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Bitcoin初探：一些知识小结"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>这段时间看论文时碰到的一些关于比特币的知识概念，记一下</p>
+</blockquote>
+<h4 id="名词理解"><a href="#名词理解" class="headerlink" title="名词理解"></a>名词理解</h4><h5 id="1-1-拜占庭容错系统"><a href="#1-1-拜占庭容错系统" class="headerlink" title="1.1 拜占庭容错系统"></a>1.1 拜占庭容错系统</h5><h6 id="拜占庭将军问题："><a href="#拜占庭将军问题：" class="headerlink" title="拜占庭将军问题："></a>拜占庭将军问题：</h6><p>寻找一个方法，使得将军们能在一个有叛徒的非信任环境中建立对战斗计划的共识。<br>共识算法的核心是在正常的节点间形成对网络状态的共识。<br>共识算法协议的属性：<br>1）一致性：所有的非缺陷进程必须同意同一个值<br>2）正确性：如果所有的非缺陷进程有相同的初始值，那么所有的非缺陷进行所同意的值是同一个初始值。<br>3）可结束性：非缺陷进程必须最终必须确定一个值。 </p>
+<h6 id="BFT拜占庭容错系统："><a href="#BFT拜占庭容错系统：" class="headerlink" title="BFT拜占庭容错系统："></a>BFT拜占庭容错系统：</h6><p>拜占庭容错技术被设计用来处理异常行为（包括硬件错误、网络拥塞、以及恶意攻击），被设计用来处理这些异常行为。<br>发生故障的节点是拜占庭节点，正常的节点为非拜占庭节点。 </p>
+<h6 id="一致性协议："><a href="#一致性协议：" class="headerlink" title="一致性协议："></a>一致性协议：</h6><p>一致性协议要求来自客户端的请求在每个服务节点上都按照一个确定的顺序执行。<br>一致性协议把服务器节点分为两类：主节点和从节点，其中主节点仅有1个。<br>在协议中，主节点负责将客户端的请求排序；从节点按照主节点提供的顺序执行请求。<br>视图:每个服务器工作时所设定的配置信息；<br>一致性协议至少包含3个阶段：request—请求，pre-prepare—序号分配，reply—响应。<br>有的会有prepare—交互，commit—序号确认这俩阶段。</p>
+<h5 id="1-2-中本聪共识"><a href="#1-2-中本聪共识" class="headerlink" title="1.2 中本聪共识"></a>1.2 中本聪共识</h5><h6 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h6><p>中本聪共识有四个组成部分：工作量证明 ，选择出块人，时间戳服务器以及激励。通过这些机制，只要网络上算力的50%以上没有协同起来去攻击网络，那么共识就是可以达成的。</p>
+<ul>
+<li><p>中本聪共识的核心是<strong>工作量证明</strong>，英文叫做 POW 。这里的 POW ，不单单是工作量证明本身，因为工作量证明本身可以认为就是一串数字，是经过很多运算工作量之后获得的一个数学问题的答案，因为这个答案可以被用来证明答案提供者的确付出了一定的工作量，所以被叫做工作量证明。但是通常在比特币的语境下，POW 指的是基于工作量证明的一系列的为了达成共识而采用的策略的总和，也就是本文的题目所说的中本聪共识，也可以叫做 POW 共识。后面的三个组成部分，其实都跟 POW 紧密相关的。</p>
+</li>
+<li><p>再来说第二点，<strong>选择出块人</strong>。中本聪共识通过让所有参与者竞争运算 POW ，形成了一种随机选择独裁者，也就是出块人的类似抽奖的机制。每个参与者，实际上就是一个 CPU ，都会拼命去运算一个数学问题的答案，也就是运算 POW ，这个过程是有随机性的，算力强的 CPU 也不一定能先算出结果，所以说类似一个抽奖过程。谁抽到大奖就会成为下一个出块人，或者说是下一轮游戏的独裁者。但是中本聪共识的特点是，最终的共识产生在最长链上，所以如果有攻击者侥幸获得了某一次的出块权，那么对网络的安全是没有影响的，因为最长链是一个多轮博弈的结果。POW 机制保障了只要攻击者没有持有超过50%的算力，那么他就不可能通过一己之力生成最长链。这样也意味着，攻击比特币网络是有真金白银的消耗的，因为需要购买大量 CPU 和电力，这可以说是比特币安全的经济角度的暴力屏障，也是终极安全屏障。</p>
+</li>
+<li><p>再说第三点，<strong>时间戳服务器</strong>。POW 对于比特币系统的核心作用是防止双花。UTXO 中所带的数字签名只能保证比特币的所有者是谁，但是却不能防止所有者对这个币多次使用，也就是进行双花。而基于 POW ，比特币形成了自己独一无二的去中心化的时间戳服务器，实现了了有效的交易排序，也避免了双花的可能。</p>
+</li>
+<li><p>最后一点，<strong>激励</strong>。中本聪共识的另外一个层面是，在网络上生成有”内在价值“的货币，让大家有动力去参与网络。运算工作量证明是要耗电的，是要花费法币的，这样就给了比特币本身以内在的固有的价值。网络设置了2100万的发行上限，保证了比特币的稀缺性。于是矿工才会自发的去参与中本聪共识这个游戏中来，换句话说就是来挖矿。这样导致两个结果，首先，挖矿过程不需要有一个强大的第三方组织去发放货币激励，比特币本身是在挖矿过程中由每一个获得了出块权的矿工发行的，同时比特币有自己的内在价值，可以直接作为矿工的奖励，不需要依赖第三方这保证了比特币的纯粹的去中心化。第二，参与的矿工越多，网络算力越大，整个网络就会越安全，因为攻击者要凑够50%的算力，就需要花更多的钱。</p>
+</li>
+</ul>
+<h6 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h6><p>首先，解决了开放系统上的拜占庭将军问题。开放的去中心化的系统上，没有人有权力限制他人进入游戏中来，也就是说网络是无准入门槛的，是 permission-less 的，各个节点地位平等且保持匿名。这样的前提下，传统的拜占庭将军问题的解决方案都是无效的。中本聪共识破天荒的解决了这个问题，是人类科技的一个突破。</p>
+<p>其次，中本聪共识形成的是一个自激励系统。这个系统是无需强势第三方去激励和推动的，于是就避免了被中心化控制的可能。当然，比特币网络也不是不用加油就能跑的永动机，加油的人是每一个网络节点，或者说是每一个参与者，是一个去中心化的加油过程，具体做法就是通过购买电力，花费发币，来给系统生成的比特币以一定的内在价值。</p>
+<p>中本聪共识的最终意义就是通过共识达成了不可篡改的数据，构建了无需信任的电子现金系统。</p>
+<p><em>reference：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/70971846">中本聪共识</a></em></p>
+<h5 id="1-3-区块链分叉问题"><a href="#1-3-区块链分叉问题" class="headerlink" title="1.3 区块链分叉问题"></a>1.3 区块链分叉问题</h5><h6 id="分叉"><a href="#分叉" class="headerlink" title="分叉"></a>分叉</h6><p>既然血缘有分支，那么区块链会不会有分叉呢？</p>
+<p>假设当前最新的区块链有三个区块：</p>
+<p>假设中国有一个节点，美国有一个节点，同时挖到了矿（即找到了符合哈希预期的区块），这两个节点都会把自己挖到的矿，链到自己本地的区块链上，这就出现了区块链分叉。</p>
+<p>同时，这两个节点会将“我挖到矿啦”同步全球其他节点，以便于其他节点同步完最新的数据后，在最新的区块链上继续挖矿，此时：</p>
+<p>· 离中国节点较近的点，可能先同步到“中国链”，并在此链的基础上继续挖，链条会持续增长</p>
+<p>· 离美国节点较近的点，可能先同步到“美国链”，并在此链的基础上继续挖，链条也会持续增长</p>
+<p>· 节点收到两个冲突的区块链同步，会判断此时哪条链的长度更长，会以长度更长的区块链为准</p>
+<p>长度更长的区块链消耗的计算力更多，不能让大部分矿工“白干啦”。</p>
+<p>如此迭代，最终全球区块链终究会达成一致，以最长的区块链为准。</p>
+<p>如果不遵守规则，成为“少数派”的节点挖到的新矿将不会被“多数派”承认，就等于“白干啦”，在区块链系统里，“遵守规则”是所有节点的最佳策略。</p>
+<p>除非，有人掌握了全球51%的计算力，才能为所欲为。承载比特币应用的区块链，一般认为一个区块后面再链了6个区块后，就不肯能被“颠覆”了，故称为“六次确认”。</p>
+<p><em>reference：<a target="_blank" rel="noopener" href="https://www.sohu.com/a/231128694_378007">区块链分叉问题，最简洁图解告诉你</a></em></p>
+<h6 id="被遗弃分支上的交易如何处理？"><a href="#被遗弃分支上的交易如何处理？" class="headerlink" title="被遗弃分支上的交易如何处理？"></a>被遗弃分支上的交易如何处理？</h6><p>只说比特币的情况。</p>
+<p>比特币地址中的余额是这个地址未花费输出的和，每笔未花费的输出都有唯一的代号（交易ID-位置），每笔输出只能花费一次，再花费就会造成冲突。</p>
+<p>所以同一个交易脚本，无论你广播多少次，期间主链调整了多少次，这个交易所在的块被孤立了多少次，都不会造成“多次交易”。</p>
+<ol>
+<li>对于矿工来说，正常的做法是把被孤立块里的交易重新放进内存池里，不需要交易发起人操作；</li>
+<li>对于交易发起人来说，如果在主链上和矿工手上都没找到自己已广播的交易（可能是因为超时被废弃了），它应该在你发起交易的那个设备上仍有记录，再广播一次就可以；</li>
+<li>如果你不得不重写交易脚本，就要小心一些了，似乎确实有那么一点“多次交易”的可能性（极端巧合）。这时你可以把余额全部转移到另一个地址，从新地址上重新发起交易就没有问题了，因为你全部转移的这笔交易和旧支付交易是冲突的，无论何时它们只有一个能生效，这样就避免了“多次交易”。</li>
+</ol>
+<p>举例来说，<a href="https://link.zhihu.com/?target=https://blockchain.info/zh-cn/address/1GbiBvxeDp9CaA2QgodrcSuuTxUZVwPGQL">地址1GbiBvx……</a> 曾经有一笔余额，它是<a href="https://link.zhihu.com/?target=https://blockchain.info/zh-cn/tx/2b873f9d6e317522fd43c4c428ff03e84f2893a5bf1a8217d6e39f55bdb14741">交易2b873f9d……</a> 的第227笔输出。</p>
+<p>假设用户在一笔交易中使用了上述余额作为部分输入，如此，<a href="https://link.zhihu.com/?target=https://blockchain.info/zh-cn/tx/8c69093ae80b4f83f16dc3236ed738a23e7e276ffb59b3b3bbcdd8db1a1943df">交易8c69093ae80b</a>，以下称为交易A。</p>
+<p>不久之后交易所在的块被孤立并且交易脚本找不到了，交易发起人如果想要重发交易时，就会冒这样的一个风险：</p>
+<p>旧的交易A脚本其实还存在，只是他没看见，如果用其他的余额发起交易B成功之后，又有人广播了交易A的脚本，他就“多次交易”了。</p>
+<p>如何避免呢？构建交易脚本时，故意使交易A和B发生冲突，无论如何只有其中一个能生效。</p>
+<p>一种办法是让A和B使用的余额来源相同（或部分相同），即在B中也使用交易<a href="https://link.zhihu.com/?target=https://blockchain.info/zh-cn/tx/2b873f9d6e317522fd43c4c428ff03e84f2893a5bf1a8217d6e39f55bdb14741">2b873f9d……</a>的第227笔输出。</p>
+<p>如果用户不记得自己用过哪一笔输出，那就干脆把地址里的余额都掏空，“掏空”的这笔交易和A肯定是冲突的。</p>
+<h5 id="1-4-双花问题"><a href="#1-4-双花问题" class="headerlink" title="1.4 双花问题"></a>1.4 双花问题</h5><h6 id="问题表现"><a href="#问题表现" class="headerlink" title="问题表现"></a>问题表现</h6><p>而我们所说的数字世界，是虚拟的数字货币，这种抛开中间第三方机构的去中心化的数字资产。在区块链系统中，双花问题会在以下情况下出现：</p>
+<p><strong>一、</strong> 由于共识机制导致区块确认时间长，用一个数字货币去进行一次交易，可以在这笔交易还未被确认完成前，进行第二笔交易。</p>
+<p><strong>二、</strong> 控制算力来实现双花，第一次交易被验证通过并被记录入区块后，在该网络中有更高的算力验证出新的更长链条，在该链条中这笔钱被第二次花费，由于第二次花费的区块链条更长使第一次交易区块所在链条为无效链条，这样一来，第一次交易所在的区块链被区块链网络放弃，第一次花费的钱就又回到自己账户了，就导致了双花问题。</p>
+<p>还有许多情况比如利用控制矿工费来实现双花，或者一人些为了节省时间而接受0确认，这就很容易被攻击者利用。</p>
+<p>2018年5月份，一名恶意矿工获得了比特币黄金（BTG）网络至少<strong>51％算力</strong>，临时控制了比特币黄金（BTG）区块链，在控制算力的期间，他把一定数量的BTG发给自己在交易所的钱包，这条分支我们命名为分支A。同时，他又把这些BTG发给另一个自己控制的钱包，这条分支我们命名为分支B。</p>
+<p>分支A上的交易被确认后，攻击者立马卖掉BTG，拿到现金。这时候，分支A成为主链。然后，攻击者在分支B上进行挖矿，由于其控制了51%以上的算力，那么攻击者获得记账权的概率很大，于是很快，分支B的长度就超过了主链（分支A），那么分支B就会成为主链，分支A上的交易就会被回滚（回滚指的是程序或数据处理错误，将程序或数据恢复到上一次正确状态的行为）。分支A恢复到攻击者发起第一笔交易之前的状态，攻击者之前换成现金的那些BTG又回到了自己手里（这些BTG是交易所的损失），实现了一次双花攻击。攻击者可能从交易所窃取超过388200个BTG，价值高达1860万美元。</p>
+<h6 id="改善方法"><a href="#改善方法" class="headerlink" title="改善方法"></a>改善方法</h6><p>通过UTXO和时间戳以及规定每笔交易必须进行六次确认等方法，致使比特币不会出现双花问题。</p>
+<p>总结一下比特币解决双花问题的措施：</p>
+<p>1.首先每笔交易都要先确认对应比特币之前的情况，要检查它是否存在于用户的UTXO中。如果不在，那么该交易会被系统拒绝。</p>
+<p>2.如果用户用同一笔UTXO付给两个人，系统中的节点只确认先接收到的那一笔。</p>
+<p>3.当两笔时间上很接近的交易被不同节点确认，区块链将发生分叉。剩余节点选择在他们认为的最长链上构建新的区块。</p>
+<p>4.当其中一笔交易被6个节点确认后，它将成为系统最长链，可以认为这笔交易获得了最终的确认。</p>
+<p>比特币虽然至今没有出现过双花问题，但也不是绝对不会出现，比如51%算力攻击。但为什么没有人这么做，首先是由于<strong>成本太高</strong>，没有人能轻易掌握51%的节点。即便一个人已经掌握了51%的节点，那么他就已经是比特币网络当中的<strong>最大受益者</strong>，如果发动51%攻击，可以短期获利，但是比特币的价值将会遭受毁灭性打击，届时他就会成为最大受害者。</p>
+<p>之前出现的那些双花问题都出在一些山寨币、小项目当中，因为攻击的成本比较低，所以安全问题必须重视。</p>
+<h5 id="1-5-比特币网络"><a href="#1-5-比特币网络" class="headerlink" title="1.5 比特币网络"></a>1.5 比特币网络</h5><p>用户把交易放到比特币网络上，节点把交易打包到区块里</p>
+<p>比特币网络工作在应用层 bitcoin blockchain 都是平等的 </p>
+<p>底层是p2p网络 p2p overlay network </p>
+<p>加入 要有种子节点 tcp-穿透防火墙 退出时不用通知其他节点 过会自动删</p>
+<p>比特币网络的设计是简单、鲁棒，而不是高效</p>
+<p>每个节点维护邻居节点集合，消息传递用<code>flooding</code>，节点受到某个消息，转发给邻居节点，同时记录该消息已经收到，下一次收到就不用转发给邻居节点。</p>
+<p>邻居节点的选择是随机的，这样能增强鲁棒性，但牺牲了效率 向身边人转账和向美国人转账几乎是相同时间的</p>
+<p>每个节点要维护一个等待上链的交易的集合</p>
+<p>第一次听到某交易，将交易加入集合，同时转发给邻居 转发前提是交易是合法的 签名合法，而且之前没被交易过</p>
+<p>risk dision 冲突交易差不多同时广播到网络上，根据网络不同可能会导致节点中账本不同</p>
+<p>写入到区块链的交易从待上链交易集合删掉，与写入链的交易冲突的交易也要删掉</p>
+<p>新发布区块和新发布交易的传播方式一样</p>
+<p>大区块在链上传播速度慢 耗带宽 带宽是瓶颈</p>
+<p>传播是<code>best effort</code>的，不保证交易的收到和顺序</p>
+<p>网络传播有延迟</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">HiWoo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://huanghy95.github.io/2021/09/17/Bitcoin%E5%88%9D%E6%8E%A2%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/">https://huanghy95.github.io/2021/09/17/Bitcoin%E5%88%9D%E6%8E%A2%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a></div><div class="post_share"><div class="addthis_inline_share_toolbox"></div><script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=null" async="async"></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/09/02/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E3%80%81std-move%E5%92%8C%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/"><img class="next-cover" src="https://i.loli.net/2021/09/02/l9Ic8f1pwWRUoQe.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">右值引用、std::move和智能指针</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/08/29/rKpGAQTNLCwjJoO.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">HiWoo</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">7</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/huanghy95"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">Welcome to my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8D%E8%AF%8D%E7%90%86%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">名词理解</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-1-%E6%8B%9C%E5%8D%A0%E5%BA%AD%E5%AE%B9%E9%94%99%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 拜占庭容错系统</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%8B%9C%E5%8D%A0%E5%BA%AD%E5%B0%86%E5%86%9B%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text">拜占庭将军问题：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#BFT%E6%8B%9C%E5%8D%A0%E5%BA%AD%E5%AE%B9%E9%94%99%E7%B3%BB%E7%BB%9F%EF%BC%9A"><span class="toc-number">1.1.2.</span> <span class="toc-text">BFT拜占庭容错系统：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE%EF%BC%9A"><span class="toc-number">1.1.3.</span> <span class="toc-text">一致性协议：</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-%E4%B8%AD%E6%9C%AC%E8%81%AA%E5%85%B1%E8%AF%86"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 中本聪共识</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%86%85%E5%AE%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text">内容</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%84%8F%E4%B9%89"><span class="toc-number">1.2.2.</span> <span class="toc-text">意义</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-3-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%88%86%E5%8F%89%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 区块链分叉问题</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%86%E5%8F%89"><span class="toc-number">1.3.1.</span> <span class="toc-text">分叉</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%A2%AB%E9%81%97%E5%BC%83%E5%88%86%E6%94%AF%E4%B8%8A%E7%9A%84%E4%BA%A4%E6%98%93%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="toc-number">1.3.2.</span> <span class="toc-text">被遗弃分支上的交易如何处理？</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-4-%E5%8F%8C%E8%8A%B1%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 双花问题</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E8%A1%A8%E7%8E%B0"><span class="toc-number">1.4.1.</span> <span class="toc-text">问题表现</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%B9%E5%96%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.4.2.</span> <span class="toc-text">改善方法</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-5-%E6%AF%94%E7%89%B9%E5%B8%81%E7%BD%91%E7%BB%9C"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 比特币网络</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/09/17/Bitcoin%E5%88%9D%E6%8E%A2%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/" title="Bitcoin初探：一些知识小结"><img src="https://i.loli.net/2021/09/23/WaKxv5CdzknVbow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Bitcoin初探：一些知识小结"/></a><div class="content"><a class="title" href="/2021/09/17/Bitcoin%E5%88%9D%E6%8E%A2%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/" title="Bitcoin初探：一些知识小结">Bitcoin初探：一些知识小结</a><time datetime="2021-09-17T15:30:36.000Z" title="Created 2021-09-17 23:30:36">2021-09-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/09/02/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E3%80%81std-move%E5%92%8C%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" title="右值引用、std::move和智能指针"><img src="https://i.loli.net/2021/09/02/l9Ic8f1pwWRUoQe.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="右值引用、std::move和智能指针"/></a><div class="content"><a class="title" href="/2021/09/02/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E3%80%81std-move%E5%92%8C%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" title="右值引用、std::move和智能指针">右值引用、std::move和智能指针</a><time datetime="2021-09-02T04:52:48.000Z" title="Created 2021-09-02 12:52:48">2021-09-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/08/30/%E7%8A%B6%E5%8E%8Bdp%E5%B0%8F%E7%BB%93/" title="状压dp小结"><img src="https://i.loli.net/2021/08/30/KLWYb7mUiQzI64t.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="状压dp小结"/></a><div class="content"><a class="title" href="/2021/08/30/%E7%8A%B6%E5%8E%8Bdp%E5%B0%8F%E7%BB%93/" title="状压dp小结">状压dp小结</a><time datetime="2021-08-30T08:43:54.000Z" title="Created 2021-08-30 16:43:54">2021-08-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/07/28/Linux%E3%80%81shell%E3%80%81c++%E7%9A%84%E4%B8%80%E4%BA%9Btips(%E5%AD%A6%E8%AF%84%E6%B5%8B%E6%97%B6%E9%81%87%E5%88%B0)/" title="Linux、shell、c++的一些tips(学评测时遇到)"><img src="https://i.loli.net/2021/08/29/eDFOCToJPbS7aBx.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux、shell、c++的一些tips(学评测时遇到)"/></a><div class="content"><a class="title" href="/2021/07/28/Linux%E3%80%81shell%E3%80%81c++%E7%9A%84%E4%B8%80%E4%BA%9Btips(%E5%AD%A6%E8%AF%84%E6%B5%8B%E6%97%B6%E9%81%87%E5%88%B0)/" title="Linux、shell、c++的一些tips(学评测时遇到)">Linux、shell、c++的一些tips(学评测时遇到)</a><time datetime="2021-07-28T09:55:06.000Z" title="Created 2021-07-28 17:55:06">2021-07-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/22/%E5%88%A9%E7%94%A8UDP%E5%AE%9E%E7%8E%B0%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93/" title="利用UDP实现可靠传输"><img src="https://i.loli.net/2021/08/30/Rzjemr8IPgHStwE.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用UDP实现可靠传输"/></a><div class="content"><a class="title" href="/2021/05/22/%E5%88%A9%E7%94%A8UDP%E5%AE%9E%E7%8E%B0%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93/" title="利用UDP实现可靠传输">利用UDP实现可靠传输</a><time datetime="2021-05-22T09:55:06.000Z" title="Created 2021-05-22 17:55:06">2021-05-22</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/09/23/WaKxv5CdzknVbow.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By HiWoo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
