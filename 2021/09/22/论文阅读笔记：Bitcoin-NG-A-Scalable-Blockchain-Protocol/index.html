@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>论文阅读笔记：Bitcoin-NG: A Scalable Blockchain Protocol | HiWoo's Blog</title><meta name="keywords" content="区块链"><meta name="author" content="HiWoo"><meta name="copyright" content="HiWoo"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Bitcoin-NG: A Scalable Blockchain Protocol一、论文概况​    本篇论文是Cornell University发表在 NSDI&#39;16 的一篇论文，内容是针对比特币等虚拟货币目前存在的带宽小延迟大并相互限制，可扩展性差的问题，提出建立了Bitcoin-NG这一模型。同时提出了几个metrics，用于评价模型的效率及公平性。最后将这一评价模型应用于现有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文阅读笔记：Bitcoin-NG: A Scalable Blockchain Protocol">
+<meta property="og:url" content="https://huanghy95.github.io/2021/09/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%EF%BC%9ABitcoin-NG-A-Scalable-Blockchain-Protocol/index.html">
+<meta property="og:site_name" content="HiWoo&#39;s Blog">
+<meta property="og:description" content="Bitcoin-NG: A Scalable Blockchain Protocol一、论文概况​    本篇论文是Cornell University发表在 NSDI&#39;16 的一篇论文，内容是针对比特币等虚拟货币目前存在的带宽小延迟大并相互限制，可扩展性差的问题，提出建立了Bitcoin-NG这一模型。同时提出了几个metrics，用于评价模型的效率及公平性。最后将这一评价模型应用于现有">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/09/24/2VFlHKoiMNBOzUx.jpg">
+<meta property="article:published_time" content="2021-09-21T16:21:05.000Z">
+<meta property="article:modified_time" content="2021-09-23T16:24:26.459Z">
+<meta property="article:author" content="HiWoo">
+<meta property="article:tag" content="区块链">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/09/24/2VFlHKoiMNBOzUx.jpg"><link rel="shortcut icon" href="https://i.loli.net/2021/08/29/rKpGAQTNLCwjJoO.jpg"><link rel="canonical" href="https://huanghy95.github.io/2021/09/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%EF%BC%9ABitcoin-NG-A-Scalable-Blockchain-Protocol/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '论文阅读笔记：Bitcoin-NG: A Scalable Blockchain Protocol',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-09-24 00:24:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/static-butterfly/dist/css/index.min.css"><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/08/29/rKpGAQTNLCwjJoO.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">5</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/09/24/2VFlHKoiMNBOzUx.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">HiWoo's Blog</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">论文阅读笔记：Bitcoin-NG: A Scalable Blockchain Protocol</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-09-21T16:21:05.000Z" title="Created 2021-09-22 00:21:05">2021-09-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-09-23T16:24:26.459Z" title="Updated 2021-09-24 00:24:26">2021-09-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="论文阅读笔记：Bitcoin-NG: A Scalable Blockchain Protocol"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="Bitcoin-NG-A-Scalable-Blockchain-Protocol"><a href="#Bitcoin-NG-A-Scalable-Blockchain-Protocol" class="headerlink" title="Bitcoin-NG: A Scalable Blockchain Protocol"></a><center>Bitcoin-NG: A Scalable Blockchain Protocol</center></h3><h4 id="一、论文概况"><a href="#一、论文概况" class="headerlink" title="一、论文概况"></a>一、论文概况</h4><p>​    本篇论文是<code>Cornell University</code>发表在 <code>NSDI&#39;16</code> 的一篇论文，内容是针对比特币等虚拟货币目前存在的带宽小延迟大并相互限制，可扩展性差的问题，提出建立了<code>Bitcoin-NG</code>这一模型。同时提出了几个<code>metrics</code>，用于评价模型的<strong>效率及公平性</strong>。最后将这一评价模型应用于现有比特币模型以及<code>Bitcoin-NG</code>上，进行比较，并采取了较大样本，最后证明了<code>Bitcoin-NG</code>模型的优势。这篇论文目前的被引用次数达到了<code>1270</code>次，这也证明了此论文的影响力和意义还是比较大的，适合好好学习研读。</p>
+<h4 id="二、Intro部分"><a href="#二、Intro部分" class="headerlink" title="二、Intro部分"></a>二、Intro部分</h4><p>​    作者在这部分首先较为概要地描述了比特币现金的主要缺陷，即吞吐量较低、延迟较高、可扩展性较差。并介绍了限制这些要素的几个因素：块大小和块生成间隔。</p>
+<p>​    对于块大小而言，一方面，增加区块大小能够提升每个块可以容纳的最大交易数量，从而增加吞吐量，但另一方面，区块的大小增加同时也导致了区块在网络中传输的延迟增加。对于块生成间隔而言，如果增加区块的生成速度，可以降低交易的确认延迟，但是这样也会导致分叉更频繁，系统的安全性大大降低，在修剪分叉花费的时间上也会更多。</p>
+<p>​    另外，论文还提到，对于传统的区块链，每个<code>leader</code>掌管过去一段时间的账单，这使得在相邻两个块之间，交易是不被确认的，这也导致了延迟的增加。</p>
+<p>​    为了解决可扩展问题，作者便建立了<code>Bitcoin-NG</code>模型。作者在此部分先是提到了<code>Bitcoin-NG</code>模型最大的亮点，那就是将交易记录与<code>leader</code>的选举解耦，分成两个不同的层次。同时对于<code>leader</code>的有效期划分<code>epochs</code>。对于<code>leader</code>的选举而言，方法与比特币现在的方法一样，都是基于<code>PoW</code>。对于每一个<code>leader</code>，它是向后看的，对它所在的<code>epochs</code>内的交易负责。</p>
+<p>​    之后作者简要介绍了本篇论文的三大重要贡献：</p>
+<p>​    一是提出了<code>Bitcoin-NG</code>这一可扩展区块链协议，该协议在维持了比特币信任前提的情况下实现了比比特币更大的吞吐量和更低的延迟。</p>
+<p>​    二是论文介绍了评估中本聪协议的量化指标。这些指标是根据比特币等虚拟货币中选取参数的讨论来设计的。</p>
+<p>​    三是通过大规模的试验（相当于15%的现今比特币规模）量化了Bitcoin-NG的鲁棒性和可扩展性。</p>
+<p>​    总的来说<code>Intro</code>部分十分清晰，描绘出了论文的大框架，同时突出了新模型的几个亮点。</p>
+<h4 id="三、前置背景的介绍"><a href="#三、前置背景的介绍" class="headerlink" title="三、前置背景的介绍"></a>三、前置背景的介绍</h4><p>​    在这部分作者首先介绍了虚拟货币研究的背景以及目标，还有一些比特币现有模式以及名词解析。由于我之前对这部分知识只是部分了解，读这部分的时候感觉还是收获蛮大，论文描述得十分扼要清晰。主要介绍了比特币研究前提背景（即开放型拜占庭容错问题）、中本聪共识、复制状态机模型、分叉的产生等。这部分不是文章的重点，总结几个重要前置概念如下：</p>
+<h5 id="3-1-Replicated-state-machine"><a href="#3-1-Replicated-state-machine" class="headerlink" title="3.1 Replicated state machine"></a>3.1 Replicated state machine</h5><p>​    区块链系统可以看作复制状态机模型，该模型一句话描述就是：多个节点上，从相同的初始状态开始，执行相同的一串命令，经过分布式传播后，仍然产生相同的最终状态。中本聪共识可以实现在分布式系统里，节点状态保持一致的目标。</p>
+<h5 id="3-2-Mining"><a href="#3-2-Mining" class="headerlink" title="3.2 Mining"></a>3.2 Mining</h5><p>​    矿工节点通过挖矿来获得记账权，即不停地对随机数哈希，直到结果小于目标值，则可以创建区块，同时打包交易。系统通过调整挖矿难度，将每个区块的产生间隔控制在10min左右。</p>
+<p>​    挖矿奖励来源于矿工打包的交易里包含的交易费，还有创建区块时发行的比特币。并且挖矿的可能性和算力成正比。</p>
+<h5 id="3-3-Forks"><a href="#3-3-Forks" class="headerlink" title="3.3 Forks"></a>3.3 Forks</h5><p>​    多个矿工同时挖到一个区块的现象，在比特币协议里非常常见，事实上比特币账本可以看作是一棵树，而不是一条链。通过修建短链，保持最长的链，来维持系统安全性。分叉容易导致双花攻击。一般情况下，只要经过1个区块的确认时间基本上就能确保“相对的安全”。比特币必须要等待6个区块的确认才能保证安全，因为攻击者要想构造攻击链追上已经经过6个区块确认的主链需要花费的算力成本是非常大的，很有可能得不偿失。因此，Bitcoin在最终确认之前，对每一个区块重复验证6次，即交易成功需要的总的时间为 1小时或更久。</p>
+<h4 id="四、Bitcoin-NG模型的介绍"><a href="#四、Bitcoin-NG模型的介绍" class="headerlink" title="四、Bitcoin-NG模型的介绍"></a>四、Bitcoin-NG模型的介绍</h4><p><code>Bitcoin-NG</code>模型的特点主要在<code>epoches</code>的划分和<code>Key Blocks</code>、<code>Microblocks</code>概念的引入。</p>
+<h5 id="4-1-Key-Blocks与Microblocks"><a href="#4-1-Key-Blocks与Microblocks" class="headerlink" title="4.1 Key Blocks与Microblocks"></a>4.1 <code>Key Blocks</code>与<code>Microblocks</code></h5><p>​    对于现有的比特币模型，每一个<code>Block</code>都需要找到用于哈希的<code>nounce</code>，即每一个块都是需要工作量的。而<code>NG</code>模型中并非如此，<code>Microblocks</code>是不作为工作量证明的，仅仅记录交易信息。对于现有的比特币模型，两个相邻块之间的的所有交易在下一个块没被挖掘出来时是可以被更改的，因此稳定性相对较差，带来双花问题，也会导致延迟的增长。<br>​    <code>Keyblocks</code>用来选取leader，NG为了提高区块链的容量和吞吐量，同时减小交易被确认的时间，关键区块不打包任何交易的信息，而是将交易信息全部放在微区块中。</p>
+<p>​    <code>Microblocks</code>记录交易信息，当一个节点挖到<code>Keyblocks</code>后就成为<code>leader</code>，它就可以生成多个微块来记录交易内容，由于微块的生成不需要消耗任何算力，微块生成的速度可以很快，微块间隔可以为10s或者更少，从而通过大量的的微块来提升区块链的容量，同时，由于微块之间的间隔较短，还可以减少部分交易的被确认时间。</p>
+<p>​    具体模型如下：</p>
+<p><img src="https://i.loli.net/2021/09/24/watKriF9Zy8MQTS.png" alt="12708f9361c428ed12d6c2ead53b857.png"></p>
+<p>​    </p>
+<p>​    就其数据结构而言，每一个<code>block</code>包含一个<code>header</code>，里面包含上一个区块的<code>hash</code>，<code>key block</code> 的上一个区块指向上一个矿工最后一个 <code>microblock</code>，这些都跟普通的区块链结构一样。只不过在 <code>key block</code> 里面也包含矿工的一个 <code>public key</code>，而后面所有的 <code>microblock</code> 则用对应的私钥签名，防止 <code>micro block</code> 伪造。把Bitcoin-NG的两种区块和比特币的区块一起进行比较的话，主要有以下几个不同。首先Bitcoin-NG的核心块只有header，是不包含交易的，并且相比比特币的header多了一个属性值是当前领导者的公钥。其次Bitcoin-NG中，交易被打包到了微块中，并且在微块的header中也必须包含当前领导者的加密签名。这个签名是使用同核心块中的公钥匹配的私钥完成的，这样所有人都可以用核心块中的公钥对微块的所属进行验证。 </p>
+<p><img src="https://i.loli.net/2021/09/24/O8MCBom4VlYLkwD.png" alt="bb9c7dc869bcdf0c060f3e8ab4576ed.png"></p>
+<p>​    这部分解耦处理属实让我感到十分聪明，用关键块来做<code>PoW</code>选择领导者，让记录交易的微块不带重量而可以以较高速度出块，看起来很能解决可扩展性问题。</p>
+<h5 id="4-2-Key-Blocks-的挖掘"><a href="#4-2-Key-Blocks-的挖掘" class="headerlink" title="4.2 Key Blocks 的挖掘"></a>4.2 <code>Key Blocks</code> 的挖掘</h5><p>​    <code>key blocks</code>没有<code>body</code>，<code>key block</code>的<code>previous block</code>可以是<code>key block</code>也可以是<code>microblock</code>，即节点在挖关键块时，可以任意选取当前的关键块或该关键块的任意一个微块来挖掘下一个关键块，关键区块分叉时，全网选择由最多算力挖掘出的关键块作为新关键块。</p>
+<h5 id="4-3-Microblocks-的生成与分叉"><a href="#4-3-Microblocks-的生成与分叉" class="headerlink" title="4.3 Microblocks 的生成与分叉"></a>4.3 <code>Microblocks</code> 的生成与分叉</h5><p>​    微区块由生成key block 的节点生成，其生成速度要比关键块快，但有最大值限制，以避免恶意<code>leader</code>通过大量生成微区块对区块链本身的冲击。微区块包含区块体和区块头。当某一节点根据某一微区块挖掘关键块成功后，他会将自己挖到的关键块公布在全网，当其他节点接收到这一关键块时，会将该微块后的所有微块作废（修剪区块），并接收由新leader产生的微块。长链胜出的统计中，<code>microblock</code> 在长链的比较中不算步长。这样避免当前的矿工不广播新的 <code>microblock</code>，比如偷偷攒了几十个<code>microblock</code>，用于自己挖新的 <code>key block</code> 获得长链优势。</p>
+<h5 id="4-4-奖励机制"><a href="#4-4-奖励机制" class="headerlink" title="4.4 奖励机制"></a>4.4 奖励机制</h5><p>​    奖励机制激励矿工的挖矿，推动链的延展，但要对其公平性进行考量，并防范各种作恶行为。对于<code>Bitcoin-NG</code>而言，挖矿报酬由两部分构成，一是会给<code>leader</code>挖到关键块一定数量的报酬，这类似于现有的比特币协议。二是，每一笔交易都含有交易费，这个交易费将用来支付<code>leader</code>的奖励，而这部分奖励又被分为两个部分：当前<code>leader</code>能获得奖励的<code>r</code>份，而紧跟其后的下一个<code>leader</code>能获得奖励的<code>1-r</code>份。</p>
+<p>​    而这个<code>r</code>的定量确定，即需要对各种作恶行为及公平性进行考量，下面介绍论文中对<code>r</code>定值的推导，这主要涉及到两种类型的作恶情况：</p>
+<h6 id="4-4-1-作恶者藏起挖到的microblocks"><a href="#4-4-1-作恶者藏起挖到的microblocks" class="headerlink" title="4.4.1 作恶者藏起挖到的microblocks"></a>4.4.1 作恶者藏起挖到的<code>microblocks</code></h6><p>​    具体作恶方法就是，一个<code>leader</code>挖出了一些<code>microblocks</code>，但不仅想拿到他的前面部分奖励，还想连后面那部分奖励一并拿走。这时他选择藏起挖到的<code>microblocks</code>，并继续挖矿，值得注意的是，这时其他诚实矿工是同时在主链上挖的（在<code>leader</code>挖到的<code>microblocks</code>被放上去之前）。这时需要分类讨论，若成功挖到了，那么百分百的奖励都归他；假若在他挖到新矿之前，别的矿工在主链上挖到了新矿，那他只好把<code>microblocks</code>放回去并在其后面挖矿，这将损失前半部分利益，偷鸡不成蚀把米。情况如下所示：</p>
+<p><img src="https://i.loli.net/2021/09/24/vfnye7xXkZCVjQ6.png" alt="2de941e8f3ac65b81a45d429e9ce4cb.png"></p>
+<p>而我们要做到的是让这种作恶方法得到的平均利益小于遵守规则的利益。因此，我们尝试假设这个作恶者的算力占全网算力的比例是<code>α</code>，微块中的报酬分配给当前领导的比例是$r_{leader}$，那么给下一个领导者的比例为$1-r_{leader}$。所以我们可以得出下面的不等式：<br>。</p>
+<p><img src="https://i.loli.net/2021/09/24/smFeQSjDT5NcXHg.png" alt="cdcf56a581d423c7872acf92121da29.png"></p>
+<p>这里的α&lt;1/4，这是由于以工作量证明）最为共识基础的区块链最多可以容忍拜占庭节点的比例是1/4，Bitcoin-NG也不例外。最终解得$\alpha&gt;37%$</p>
+<p>这里一开始不太明白，不等号右边的正常情况，为什么只考虑当前一定有的$r_{leader}$，而不继续讨论多一轮情况，即继续挖也是有$\alpha$的概率能拿到全部报酬的。后面仔细思考考虑到这种情况肯定也是满足不等式的，原文不等式已经对条件进行了加强，即已经进行了一轮放缩。</p>
+<h6 id="4-4-2-作恶者不在最新microblock后挖矿"><a href="#4-4-2-作恶者不在最新microblock后挖矿" class="headerlink" title="4.4.2 作恶者不在最新microblock后挖矿"></a>4.4.2 作恶者不在最新<code>microblock</code>后挖矿</h6><p>​    具体作恶方法就是，作恶者不在新的<code>microblock</code>后继续挖，而是仍然在之前的某个<code>microblock</code>上挖，造成<code>fork</code>并企图让自己所在的链成为主链，获得现在主链上<code>microblocks</code>的全部奖励。假设现在作恶者在之前的某个<code>microblock</code>上挖出了<code>keyblock</code>，那么就产生了一个<code>fork</code>，同时因为<code>microblock</code>没有重量，因此此时最重的链是新<code>fork</code>出来的分支，作恶者将主链上暂时没有后继的<code>microblocks</code>转移到新链上，并继续在其后挖矿，希望这个分支最终成为主链，为了拿走这些<code>microblocks</code>的全部奖励，就必须在其后再挖出一个<code>keyblocks</code>。若比其他正常矿工挖的满，那将损失后半部分利益。情况如下所示：</p>
+<p><img src="https://i.loli.net/2021/09/24/XPeAZzFlOSHUDyV.png" alt="d70e098cb56b295b7c7266519aa8bca.png"></p>
+<p>为了使作恶的期望收益较小，因此需要满足如下不等式：</p>
+<p><img src="https://i.loli.net/2021/09/24/zPcNXSMWYQ8Zphw.png" alt="a3f70a5e04f4036e8335ddc0447e259.png"></p>
+<p>解得$\alpha&lt;\frac{1-\alpha}{2-\alpha}$，对于$\alpha&lt;\frac{1}{4}$，解得$r_{leader}&lt;43%$</p>
+<p>因此综合上面两种作恶情况，将$r_{leader}$取值为40%</p>
+<h5 id="4-5-其他关注点"><a href="#4-5-其他关注点" class="headerlink" title="4.5 其他关注点"></a>4.5 其他关注点</h5><h6 id="4-5-1-分叉问题"><a href="#4-5-1-分叉问题" class="headerlink" title="4.5.1 分叉问题"></a>4.5.1 分叉问题</h6><p>​    当以更高的频率生成微区块时，几乎在每一个关键区块生成时Bitcoin-NG都会观察到分叉，因此上一个<code>leader</code>持续生成微区块，直到它收到关键区块。这些分叉能被迅速解决，因为一旦新的关键区块到达一个节点，将转换到新的<code>leader</code>。</p>
+<p>​    对于微块分叉而言，相比于比特币，当以这么高的频率运行比特币时，分叉只能通过最重区块链延伸规则来解决，而且因为不同的矿工在不同的分叉上挖矿，因此分叉存在的时间比Bitcoin-NG的要长。</p>
+<p>​    对于关键块分叉而言，由于很低的频率和更小关键区块可以快速传输，关键区块的分叉很少发生，但持续时间很长。尽管不希望发生这样长时间的分叉，但它们并不危险。分叉会广播到全网，一旦它到达节点，矿工就知道了未确认的状态，直到该分叉链获得领先。</p>
+<h6 id="4-5-2-双花问题"><a href="#4-5-2-双花问题" class="headerlink" title="4.5.2 双花问题"></a>4.5.2 双花问题</h6><p>​    论文中将造成双花的行为成为毒性交易，主要是造成微块分叉。<code>Bitcoin-NG</code>模型为了防止这种毒性交易，制订了一项规则，即当前的领导者如果发现之前的领导的恶意行为，他可以把那个恶意领导造成分叉的另一个分支上的第一个区块头作为欺诈证明<code>Proof of Fraud</code>打包到自己生产的微块中并公开，这样那个恶意领导所得的全部报酬都会被收回。同时也会为“举报”的领导（打包毒性交易到自己的微块中的领导者）可以得到$5%$补偿作为举报奖励，但具体补偿比例是从何考量，文章并没有详细给出。</p>
+<p>​    值得注意的是，举报者必须在恶意矿工所获得的报酬可以使用前把毒性交易打包到区块中，否则毒性交易就无法被认定。所以在<code>Bitcoin-NG</code>模型中有一个报酬审核期的概念，这个审核期是产生100个核心块所用的时间，即矿工挖矿所获得的奖励和生产微块所获得的交易费在100个时代后才可以使用。所以如果双花发生，必须在100个时代结束前发现并将毒性交易打包到微块中才能起到作用。并且针对某个恶意领导造成的一个分叉，只能有一个毒性交易被认定。</p>
+<h4 id="五、制订评估指标并对Bitcoin-NG与现有比特币模型做性能比较"><a href="#五、制订评估指标并对Bitcoin-NG与现有比特币模型做性能比较" class="headerlink" title="五、制订评估指标并对Bitcoin-NG与现有比特币模型做性能比较"></a>五、制订评估指标并对<code>Bitcoin-NG</code>与现有比特币模型做性能比较</h4><h5 id="5-1-指标引入"><a href="#5-1-指标引入" class="headerlink" title="5.1 指标引入"></a>5.1 指标引入</h5><p>​    论文首先对带宽做了限制，带宽是单位时间上传输的数据量；因为<code>Bitcoin-NG</code>只受限于网络延迟，所以测试时把带宽设为常数。在带宽一定的情况下，检测延迟情况和安全性能如何。对于延迟方面，作者引入了共识延迟$(e,\delta)$的概念，即$(\delta%)$的时间内，$(e%)$的 <code>miner</code> 达成共识所需要的时间。对于公平性的评价，作者引入了两个比值，一是非最大矿工的转换与所有转换的比值，二是非最大矿工的算力与全部算力的比值。我们将它们的比值称为公平性，因此最好的公平性是1，即最大矿工和非最大矿工在转换设置中的表现应该与它们各自的挖矿算力一样。还引入了算力利用率这一概念，即维护系统安全的算力/总算力，引入这一指标是因为POW的安全性是由维护它的挖矿算力比例所提供的。</p>
+<p>​    此外还有<code>time to prune</code>和<code>time to win</code>两个时间指标，含义如下：</p>
+<p><img src="https://i.loli.net/2021/09/24/tbmEf7NXhScs8x3.png" alt="30d9a76725ee77a1b9cc46205800d99.png"></p>
+<h5 id="5-2-将Bitcoin-NG与现有比特币代入评价模型"><a href="#5-2-将Bitcoin-NG与现有比特币代入评价模型" class="headerlink" title="5.2 将Bitcoin-NG与现有比特币代入评价模型"></a>5.2 将<code>Bitcoin-NG</code>与现有比特币代入评价模型</h5><p>​    首先，论文将问题做了几个拟合假设，一是拟合了⼀个随机⽹络来模拟结点之间的连接分布，通过将这个网络的延迟直方图与现有比特币延迟直方图相比较，发现拟合情况较好，说明了拟合的合理性，这部分测试个人感觉相对薄弱。    </p>
+<p>​    再者，对于吞吐量低和高延迟问题，⽂章分别提高块⼤⼩以及缩短块与块之间间隔来作为评定方式。    </p>
+<p>​    结果上，一方面，缩短块与块之间间隔时，共识延迟有降低但降低不多，而<code>time to prune</code>和<code>time to win</code>两个时间指标有明显缩短。在算力利用率、公平性这两个指标的表现上，新模型表现得比原有比特币模型出色很多，论文认为新模型解决了 Bitcoin 由于出块速度加快⽽导致不安全不稳定的问题。</p>
+<p>​    另一方面，当增大块⼤⼩时，共识延迟、<code>time to win</code>都缩短了，但<code>time to prune</code> 的变化并不明显。在算力利用率和公平性这两个表现上，<code>Bitcoin-NG</code> 比原有比特币模型出色。</p>
+<p>​    个人总体感觉论文建立的评价模型相对薄弱，<code>metrics</code>比较少，尤其是吞吐量方面，合理假设方面的有效性论证感觉也相对薄弱，其他针对<code>Bitcoin-NG</code>模型的相关论文也普遍认为该模型吞吐量提升有限。</p>
+<h4 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h4><p>​    总体看下来，本篇论文一是提出了<code>Bitcoin-NG</code>这一可扩展区块链协议，该协议在维持了比特币信任前提的情况下实现了比比特币更大的吞吐量和更低的延迟。二是论文为模型的评估提出了一些量化指标，这些指标是根据比特币等虚拟货币中选取参数的讨论来设计的，最后是通过大规模的试验量化了Bitcoin-NG的鲁棒性和可扩展性。</p>
+<p>​    因为该模型也还是基于<code>PoW</code>，个人在阅读这篇文章后对比特币模型有了进一步的理解，同时论文提出的将选举<code>leader</code>与交易记录进行解耦这个想法也让我眼前一亮。还有就是在确定奖励分配时对各种作恶情况的综合考量，最终量化也让我觉得好强。总的来说属实是一篇值得以后继续细细研读的好文章。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">HiWoo</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://huanghy95.github.io/2021/09/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%EF%BC%9ABitcoin-NG-A-Scalable-Blockchain-Protocol/">https://huanghy95.github.io/2021/09/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%EF%BC%9ABitcoin-NG-A-Scalable-Blockchain-Protocol/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a></div><div class="post_share"><div class="addthis_inline_share_toolbox"></div><script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=null" async="async"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/09/23/%E4%BA%91%E8%AE%A1%E7%AE%97%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93/"><img class="prev-cover" src="https://i.loli.net/2021/09/23/jVRUbEBSor5mN7h.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">云计算微服务相关概念总结</div></div></a></div><div class="next-post pull-right"><a href="/2021/09/19/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9C%A8%E6%AF%94%E7%89%B9%E5%B8%81%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/"><img class="next-cover" src="https://i.loli.net/2021/09/24/xwTHPjdLXM2YpZm.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">密码学在比特币中的使用</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/09/17/Bitcoin初探：一些知识小结/" title="Bitcoin初探：一些知识小结"><img class="cover" src="https://i.loli.net/2021/09/23/WaKxv5CdzknVbow.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-17</div><div class="title">Bitcoin初探：一些知识小结</div></div></a></div><div><a href="/2021/09/19/密码学在比特币中的使用/" title="密码学在比特币中的使用"><img class="cover" src="https://i.loli.net/2021/09/24/xwTHPjdLXM2YpZm.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-19</div><div class="title">密码学在比特币中的使用</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/08/29/rKpGAQTNLCwjJoO.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">HiWoo</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/huanghy95"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">Welcome to my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Bitcoin-NG-A-Scalable-Blockchain-Protocol"><span class="toc-number">1.</span> <span class="toc-text">Bitcoin-NG: A Scalable Blockchain Protocol</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%AE%BA%E6%96%87%E6%A6%82%E5%86%B5"><span class="toc-number">1.1.</span> <span class="toc-text">一、论文概况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Intro%E9%83%A8%E5%88%86"><span class="toc-number">1.2.</span> <span class="toc-text">二、Intro部分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%89%8D%E7%BD%AE%E8%83%8C%E6%99%AF%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.3.</span> <span class="toc-text">三、前置背景的介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-Replicated-state-machine"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 Replicated state machine</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-Mining"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 Mining</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-3-Forks"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 Forks</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B%E3%80%81Bitcoin-NG%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.4.</span> <span class="toc-text">四、Bitcoin-NG模型的介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-1-Key-Blocks%E4%B8%8EMicroblocks"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 Key Blocks与Microblocks</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-2-Key-Blocks-%E7%9A%84%E6%8C%96%E6%8E%98"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 Key Blocks 的挖掘</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-Microblocks-%E7%9A%84%E7%94%9F%E6%88%90%E4%B8%8E%E5%88%86%E5%8F%89"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 Microblocks 的生成与分叉</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-4-%E5%A5%96%E5%8A%B1%E6%9C%BA%E5%88%B6"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 奖励机制</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#4-4-1-%E4%BD%9C%E6%81%B6%E8%80%85%E8%97%8F%E8%B5%B7%E6%8C%96%E5%88%B0%E7%9A%84microblocks"><span class="toc-number">1.4.4.1.</span> <span class="toc-text">4.4.1 作恶者藏起挖到的microblocks</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#4-4-2-%E4%BD%9C%E6%81%B6%E8%80%85%E4%B8%8D%E5%9C%A8%E6%9C%80%E6%96%B0microblock%E5%90%8E%E6%8C%96%E7%9F%BF"><span class="toc-number">1.4.4.2.</span> <span class="toc-text">4.4.2 作恶者不在最新microblock后挖矿</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-5-%E5%85%B6%E4%BB%96%E5%85%B3%E6%B3%A8%E7%82%B9"><span class="toc-number">1.4.5.</span> <span class="toc-text">4.5 其他关注点</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#4-5-1-%E5%88%86%E5%8F%89%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.5.1.</span> <span class="toc-text">4.5.1 分叉问题</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#4-5-2-%E5%8F%8C%E8%8A%B1%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.5.2.</span> <span class="toc-text">4.5.2 双花问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%88%B6%E8%AE%A2%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87%E5%B9%B6%E5%AF%B9Bitcoin-NG%E4%B8%8E%E7%8E%B0%E6%9C%89%E6%AF%94%E7%89%B9%E5%B8%81%E6%A8%A1%E5%9E%8B%E5%81%9A%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83"><span class="toc-number">1.5.</span> <span class="toc-text">五、制订评估指标并对Bitcoin-NG与现有比特币模型做性能比较</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-1-%E6%8C%87%E6%A0%87%E5%BC%95%E5%85%A5"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 指标引入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-%E5%B0%86Bitcoin-NG%E4%B8%8E%E7%8E%B0%E6%9C%89%E6%AF%94%E7%89%B9%E5%B8%81%E4%BB%A3%E5%85%A5%E8%AF%84%E4%BB%B7%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 将Bitcoin-NG与现有比特币代入评价模型</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-number">1.6.</span> <span class="toc-text">六、总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/09/23/%E4%BA%91%E8%AE%A1%E7%AE%97%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93/" title="云计算微服务相关概念总结"><img src="https://i.loli.net/2021/09/23/jVRUbEBSor5mN7h.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="云计算微服务相关概念总结"/></a><div class="content"><a class="title" href="/2021/09/23/%E4%BA%91%E8%AE%A1%E7%AE%97%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93/" title="云计算微服务相关概念总结">云计算微服务相关概念总结</a><time datetime="2021-09-23T15:39:21.000Z" title="Created 2021-09-23 23:39:21">2021-09-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/09/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%EF%BC%9ABitcoin-NG-A-Scalable-Blockchain-Protocol/" title="论文阅读笔记：Bitcoin-NG: A Scalable Blockchain Protocol"><img src="https://i.loli.net/2021/09/24/2VFlHKoiMNBOzUx.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文阅读笔记：Bitcoin-NG: A Scalable Blockchain Protocol"/></a><div class="content"><a class="title" href="/2021/09/22/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%EF%BC%9ABitcoin-NG-A-Scalable-Blockchain-Protocol/" title="论文阅读笔记：Bitcoin-NG: A Scalable Blockchain Protocol">论文阅读笔记：Bitcoin-NG: A Scalable Blockchain Protocol</a><time datetime="2021-09-21T16:21:05.000Z" title="Created 2021-09-22 00:21:05">2021-09-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/09/19/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9C%A8%E6%AF%94%E7%89%B9%E5%B8%81%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/" title="密码学在比特币中的使用"><img src="https://i.loli.net/2021/09/24/xwTHPjdLXM2YpZm.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="密码学在比特币中的使用"/></a><div class="content"><a class="title" href="/2021/09/19/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9C%A8%E6%AF%94%E7%89%B9%E5%B8%81%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/" title="密码学在比特币中的使用">密码学在比特币中的使用</a><time datetime="2021-09-18T16:02:49.000Z" title="Created 2021-09-19 00:02:49">2021-09-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/09/17/Bitcoin%E5%88%9D%E6%8E%A2%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/" title="Bitcoin初探：一些知识小结"><img src="https://i.loli.net/2021/09/23/WaKxv5CdzknVbow.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Bitcoin初探：一些知识小结"/></a><div class="content"><a class="title" href="/2021/09/17/Bitcoin%E5%88%9D%E6%8E%A2%EF%BC%9A%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/" title="Bitcoin初探：一些知识小结">Bitcoin初探：一些知识小结</a><time datetime="2021-09-17T15:30:36.000Z" title="Created 2021-09-17 23:30:36">2021-09-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/09/02/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E3%80%81std-move%E5%92%8C%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" title="右值引用、std::move和智能指针"><img src="https://i.loli.net/2021/09/02/l9Ic8f1pwWRUoQe.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="右值引用、std::move和智能指针"/></a><div class="content"><a class="title" href="/2021/09/02/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E3%80%81std-move%E5%92%8C%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" title="右值引用、std::move和智能指针">右值引用、std::move和智能指针</a><time datetime="2021-09-02T04:52:48.000Z" title="Created 2021-09-02 12:52:48">2021-09-02</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2021/09/24/2VFlHKoiMNBOzUx.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By HiWoo</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
