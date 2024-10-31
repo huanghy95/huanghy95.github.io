@@ -17,7 +17,7 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-📚 Haiyu Huang is currently a 1st-year CSE M.Phil candidate at [Sun Yat-Sen University](https://cse.sysu.edu.cn/), advised by Professor [Pengfei Chen](https://cse.sysu.edu.cn/content/3747). Previously, he received a B.E. in CSE from Sun Yat-Sen University in 2023. He has interned at [Alibaba Cloud](https://cn.aliyun.com/), [Huawei](https://www.huawei.com/), and [Ant Group](https://www.antgroup.com/) in Cloud Native Application Performance Management related departments, developing algorithms and solving real-world problems.
+📚 Haiyu Huang is currently a 2nd-year CSE M.Phil candidate at [Sun Yat-Sen University](https://cse.sysu.edu.cn/), advised by Professor [Pengfei Chen](https://cse.sysu.edu.cn/content/3747). Previously, he received a B.E. in CSE from Sun Yat-Sen University in 2023. He has interned at [Alibaba Cloud](https://cn.aliyun.com/), [Huawei](https://www.huawei.com/), and [Ant Group](https://www.antgroup.com/) in Cloud Native Application Performance Management related departments, developing algorithms and solving real-world problems.
 
 💡 His research interest lies in microservices reliabilty (e.g., developing observability tools for cloud systems.), AI for DevOps (e.g., automating software debugging and troubleshooting during development or operations, especially using LLMs) and MLOps (e.g., automating AI system operations).
 
