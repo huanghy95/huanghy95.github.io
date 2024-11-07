@@ -38,7 +38,7 @@ redirect_from:
 
   <span style="font-size:14px;"> *The ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Rotterdam, the Netherlands, March-April 2025.* </span>
 
-  [Paper]
+  [[Paper](https://huanghy95.github.io/files/asplos25/asplos25Mint.pdf)]
   [Code]
   [Slides]
   [DOI]
