@@ -78,6 +78,7 @@ redirect_from:
 
 
 # 🎖 Honors and Awards
+- *2024.10* National Scholarship, Ministry of Education of the P.R. China. 
 - *2024.06* ACM SIGSOFT Distinguished Paper award, FSE 2024.
 - *2023.12* 3rd Prize, CCF International AIOps Challenge (Ranked 1st among student teams) (**As Team Leader**).
 - *2020.10* National Scholarship, Ministry of Education of the P.R. China. 
