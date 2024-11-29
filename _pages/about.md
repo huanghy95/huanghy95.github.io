@@ -54,6 +54,15 @@ redirect_from:
   [[Slides](https://huanghy95.github.io/files/fse24/fse351slides.pdf)]
   [[DOI](https://dl.acm.org/doi/abs/10.1145/3643748)]
 
+- &nbsp; <span class="badge">Arxiv</span> &nbsp;**TraGraphRCA: Practical Multi-Level Root Cause Analysis for Microservice with Trace-Graph Fusion**
+
+  <span style="font-size:14px;"> **Haiyu Huang**, Xiaoyu Zhang, Pengfei Chen, Guangba Yu, Zilong He, Qiuai Fu and Michael R. Lyu. </span>
+
+  [[Paper](https://huanghy95.github.io/files/tosem24/TraGraphRCA_TOSEM.pdf)]
+  [Code]
+  [Slides]
+  [DOI]
+
 - &nbsp; <span class="badge">ASE '24</span> &nbsp;**FaaSConf: QoS-aware Hybrid Resources Configuration for Serverless Workflows**
 
   <span style="font-size:14px;"> Yilun Wang, Pengfei Chen, Hui Dou, Guangba Yu, Zilong He and **Haiyu Huang**. </span>
