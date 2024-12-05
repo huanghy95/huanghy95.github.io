@@ -23,6 +23,7 @@ redirect_from:
 
 
 # 🔥 News
+- *2024.12*: &nbsp;🎉🎉 Our paper "Conan: Uncover Consensus Issues in Distributed Databases Using Fuzzing-driven Fault Injection" was accepted by SANER'25 Research Track.
 - *2024.10*: &nbsp;🎉🎉 Our paper "Mint: Cost-Efficient Tracing with All Requests Collection via Commonality and Variability Analysis" was accepted by ASPLOS'25 Research Track.
 - *2024.08*: &nbsp;🎉🎉 Our paper "FaaSConf: QoS-aware Hybrid Resources Configuration for Serverless Workflows" was accepted by ASE'24 Research Track.
 - *2024.07*: &nbsp;🎉🎉 Our paper "FaaSRCA: Full Lifecycle Root Cause Analysis for Serverless Applications" was accepted by ISSRE'24 Research Track.
@@ -73,6 +74,17 @@ redirect_from:
   [[Code](https://github.com/wiluen/FaaSConf)]
   [Slides]
   [[DOI](https://dl.acm.org/doi/10.1145/3691620.3695477)]
+
+- &nbsp; <span class="badge">SANER '25</span> &nbsp;**Conan: Uncover Consensus Issues in Distributed Databases Using Fuzzing-driven Fault Injection**
+
+  <span style="font-size:14px;"> Haojia Huang, Pengfei Chen, Guangba Yu, **Haiyu Huang**, Jia Chang, Jun Li and Jian Han. </span>
+
+  <span style="font-size:14px;"> *The IEEE International Conference on Software Analysis, Evolution and Reengineering, Montréal, Québec, Canada, March 2025.* </span>
+
+  [Paper]
+  [Code]
+  [Slides]
+  [DOI]
 
 - &nbsp; <span class="badge">ISSRE '24</span> &nbsp;**FaaSRCA: Full Lifecycle Root Cause Analysis for Serverless Applications**
 
