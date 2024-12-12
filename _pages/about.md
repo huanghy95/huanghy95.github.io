@@ -105,7 +105,7 @@ redirect_from:
 - *2020.10* National Scholarship, Ministry of Education of the P.R. China. 
 
 # 📖 Educations
-- *2023.09 - (now)*, present M.Phil student, Sun Yat-Sen University
+- *2023.09 - (now)*, research assistant, Sun Yat-Sen University
 - *2019.09 - 2023.06*, Bachelor degree, Sun Yat-Sen University
   - GPA: 4.1/5.0; Rank: Top 10%
 
