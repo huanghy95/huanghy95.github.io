@@ -107,7 +107,6 @@ redirect_from:
 # 📖 Educations
 - *2023.09 - (now)*, research assistant, Sun Yat-Sen University
 - *2019.09 - 2023.06*, Bachelor degree, Sun Yat-Sen University
-  - GPA: 4.1/5.0; Rank: Top 10%
 
 # 💬 Services
 - *Reviewer:*  WWW 2024
