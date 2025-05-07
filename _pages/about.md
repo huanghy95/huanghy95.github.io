@@ -77,7 +77,7 @@ redirect_from:
   [Slides]
   [[DOI](https://dl.acm.org/doi/10.1145/3691620.3695477)]
 
-- &nbsp; <span class="badge" style="font-size:16px;">IWQOS '25 (CCF B)</span> &nbsp;**LLMConf: Knowledge-Enhanced Configuration Optimization for Large Language Model Inference**
+- &nbsp; <span class="badge">IWQOS '25</span> &nbsp;**LLMConf: Knowledge-Enhanced Configuration Optimization for Large Language Model Inference**
 
   <span style="font-size:14px;"> Jingkai He, Pengfei Chen, Yilun Wang, **Haiyu Huang**, Chuanfu Zhang, Haojia Huang, Danwen Chen. </span>
 
