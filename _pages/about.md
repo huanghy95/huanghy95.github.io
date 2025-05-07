@@ -25,6 +25,7 @@ redirect_from:
 # 🔥 News
 - *2025.05*: &nbsp;🎉🎉 Our paper "LLMConf: Knowledge-Enhanced Configuration Optimization for Large Language Model Inference" was accepted by IWQOS'25 Research Track.
 - *2025.04*: &nbsp;🎉🎉 I’m honored to receive the Hong Kong PhD Fellowship (HKPFS) offer.
+- *2025.02*: &nbsp;🎉🎉 I’m honored to receive the CUHK Vice-Chancellor's Scholarship offer.
 - *2024.12*: &nbsp;🎉🎉 Our paper "Conan: Uncover Consensus Issues in Distributed Databases Using Fuzzing-driven Fault Injection" was accepted by SANER'25 Research Track.
 - *2024.10*: &nbsp;🎉🎉 Our paper "Mint: Cost-Efficient Tracing with All Requests Collection via Commonality and Variability Analysis" was accepted by ASPLOS'25 Research Track.
 - *2024.08*: &nbsp;🎉🎉 Our paper "FaaSConf: QoS-aware Hybrid Resources Configuration for Serverless Workflows" was accepted by ASE'24 Research Track.
@@ -113,6 +114,7 @@ redirect_from:
 
 # 🎖 Honors and Awards
 - *2025.04* Hong Kong PhD Fellowship (HKPFS), Hong Kong University Grants Committee
+- *2025.02* CUHK Vice-Chancellor's Scholarship, The Chinese University of Hong Kong
 - *2024.10* National Scholarship, Ministry of Education of the P.R. China. 
 - *2024.06* ACM SIGSOFT Distinguished Paper award, FSE 2024.
 - *2023.12* 3rd Prize, CCF International AIOps Challenge (Ranked 1st among student teams) (**As Team Leader**).
