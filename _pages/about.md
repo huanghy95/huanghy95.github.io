@@ -23,6 +23,8 @@ redirect_from:
 
 
 # 🔥 News
+- *2025.05*: &nbsp;🎉🎉 Our paper "LLMConf: Knowledge-Enhanced Configuration Optimization for Large Language Model Inference" was accepted by IWQOS'25 Research Track.
+- *2025.04*: &nbsp;🎉🎉 I’m honored to receive the Hong Kong PhD Fellowship (HKPFS) offer.
 - *2024.12*: &nbsp;🎉🎉 Our paper "Conan: Uncover Consensus Issues in Distributed Databases Using Fuzzing-driven Fault Injection" was accepted by SANER'25 Research Track.
 - *2024.10*: &nbsp;🎉🎉 Our paper "Mint: Cost-Efficient Tracing with All Requests Collection via Commonality and Variability Analysis" was accepted by ASPLOS'25 Research Track.
 - *2024.08*: &nbsp;🎉🎉 Our paper "FaaSConf: QoS-aware Hybrid Resources Configuration for Serverless Workflows" was accepted by ASE'24 Research Track.
@@ -75,6 +77,17 @@ redirect_from:
   [Slides]
   [[DOI](https://dl.acm.org/doi/10.1145/3691620.3695477)]
 
+- &nbsp; <span class="badge" style="font-size:16px;">IWQOS '25 (CCF B)</span> &nbsp;**LLMConf: Knowledge-Enhanced Configuration Optimization for Large Language Model Inference**
+
+  <span style="font-size:14px;"> Jingkai He, Pengfei Chen, Yilun Wang, **Haiyu Huang**, Chuanfu Zhang, Haojia Huang, Danwen Chen. </span>
+
+  <span style="font-size:14px;"> *IEEE/ACM International Symposium on Quality of Service, Gold Coast, Australia, July 2025.* </span> 
+
+  [Paper]
+  [Code]
+  [Slides]
+  [DOI]
+
 - &nbsp; <span class="badge">SANER '25</span> &nbsp;**Conan: Uncover Consensus Issues in Distributed Databases Using Fuzzing-driven Fault Injection**
 
   <span style="font-size:14px;"> Haojia Huang, Pengfei Chen, Guangba Yu, **Haiyu Huang**, Jia Chang, Jun Li and Jian Han. </span>
@@ -99,6 +112,7 @@ redirect_from:
 
 
 # 🎖 Honors and Awards
+- *2025.04* Hong Kong PhD Fellowship (HKPFS), Hong Kong University Grants Committee
 - *2024.10* National Scholarship, Ministry of Education of the P.R. China. 
 - *2024.06* ACM SIGSOFT Distinguished Paper award, FSE 2024.
 - *2023.12* 3rd Prize, CCF International AIOps Challenge (Ranked 1st among student teams) (**As Team Leader**).
