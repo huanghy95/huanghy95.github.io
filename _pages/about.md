@@ -17,7 +17,7 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-📚 Haiyu Huang is currently a research assistant at [Sun Yat-Sen University](https://cse.sysu.edu.cn/), advised by Professor [Pengfei Chen](https://cse.sysu.edu.cn/content/3747). Previously, he received a B.E. in CSE from Sun Yat-Sen University in 2023. He has interned at [Alibaba Cloud](https://cn.aliyun.com/), [Huawei](https://www.huawei.com/), and [Ant Group](https://www.antgroup.com/) in Cloud Native Application Performance Management related departments, developing algorithms and solving real-world problems.
+📚 Haiyu Huang is currently a 1st-year CSE Ph.D. student at [The Chinese University of Hong Kong](https://www.cse.cuhk.edu.hk/), advised by [Prof. Michael R. Lyu](https://www.cse.cuhk.edu.hk/lyu/). Previously, he worked as a research assistant at Sun Yat-sen University under the guidance of [Prof. Pengfei Chen](https://cse.sysu.edu.cn/content/3747). He received a B.E. in CSE from Sun Yat-Sen University in 2023. He has interned at [Alibaba Cloud](https://cn.aliyun.com/), [Huawei](https://www.huawei.com/), and [Ant Group](https://www.antgroup.com/) in Cloud Native Application Performance Management related departments, developing algorithms and solving real-world problems.
 
 💡 His research interest lies in microservices reliabilty (e.g., developing observability tools for cloud systems.), AI for DevOps (e.g., automating software debugging and troubleshooting during development or operations, especially using LLMs) and MLOps (e.g., automating AI system operations).
 
@@ -115,13 +115,13 @@ redirect_from:
 # 🎖 Honors and Awards
 - *2025.04* Hong Kong PhD Fellowship (HKPFS), Hong Kong University Grants Committee
 - *2025.02* CUHK Vice-Chancellor's Scholarship, The Chinese University of Hong Kong
-- *2024.10* National Scholarship, Ministry of Education of the P.R. China. 
+- *2020.10, 2024.10* National Scholarship, Ministry of Education of the P.R. China. 
 - *2024.06* ACM SIGSOFT Distinguished Paper award, FSE 2024.
 - *2023.12* 3rd Prize, CCF International AIOps Challenge (Ranked 1st among student teams) (**As Team Leader**).
-- *2020.10* National Scholarship, Ministry of Education of the P.R. China. 
 
 # 📖 Educations
-- *2023.09 - (now)*, research assistant, Sun Yat-Sen University
+- *2025.08 - (now)*, Ph.D. student, The Chinese University of Hong Kong
+- *2023.09 - 2025.07*, research assistant, Sun Yat-Sen University
 - *2019.09 - 2023.06*, Bachelor degree, Sun Yat-Sen University
 
 # 💬 Services

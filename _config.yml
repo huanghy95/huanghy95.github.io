@@ -23,12 +23,12 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 author:
   name             : "Haiyu Huang"
   avatar           : "images/android-chrome-512x512.png"
-  bio              : "Sun Yat-sen University"
-  location         : "Guangzhou, China"
+  bio              : "The Chinese University of Hong Kong"
+  location         : "Sha Tin, Hong Kong"
   employer         :
   pubmed           : 
   googlescholar    : "https://scholar.google.com/citations?user=Owecs8AAAAAJ"
-  email            : "huanghy95@mail2.sysu.edu.cn"
+  email            : "hyhuang25@cse.cuhk.edu.hk"
   researchgate     :  # e.g., "https://www.researchgate.net/profile/yourprofile"
   uri              :
   bitbucket        :
