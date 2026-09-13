@@ -17,7 +17,7 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-📚 Haiyu Huang is currently a second-year CSE Ph.D. student at [The Chinese University of Hong Kong](https://www.cse.cuhk.edu.hk/), advised by [Prof. Michael R. Lyu](https://www.cse.cuhk.edu.hk/lyu/). Previously, he worked as a research assistant at Sun Yat-sen University under the guidance of [Prof. Pengfei Chen](https://cse.sysu.edu.cn/content/3747). He received a B.E. in CSE from Sun Yat-Sen University in 2023. He has interned at [Alibaba Cloud](https://cn.aliyun.com/), [Huawei](https://www.huawei.com/), and [Ant Group](https://www.antgroup.com/) in Cloud Native Application Performance Management related departments, developing algorithms and solving real-world problems.
+📚 Haiyu Huang is currently a second-year CSE Ph.D. student at [The Chinese University of Hong Kong](https://www.cse.cuhk.edu.hk/), advised by [Prof. Michael R. Lyu](https://www.cse.cuhk.edu.hk/lyu/). Previously, he worked as a research assistant at Sun Yat-sen University under the guidance of [Prof. Pengfei Chen](https://cse.sysu.edu.cn/content/3747). He received a B.E. in CSE from Sun Yat-Sen University in 2023. He has interned at [Alibaba Cloud](https://cn.aliyun.com/), [Huawei](https://www.huawei.com/), [Ant Group](https://www.antgroup.com/), and [ByteDance](https://www.bytedance.com/) in Cloud Native Application Performance Management related departments, developing algorithms and solving real-world problems.
 
 💡 His research interest lies in microservices reliabilty (e.g., developing observability tools for cloud systems.), AI for DevOps (e.g., automating software debugging and troubleshooting during development or operations, especially using LLMs) and MLOps (e.g., automating AI system operations).
 
