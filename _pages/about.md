@@ -76,7 +76,7 @@ redirect_from:
   [Slides]
   [[DOI](https://doi.org/10.1145/3838599)]
 
-- &nbsp; <span class="badge">ICWS-REMS '26</span> &nbsp;**Reliable Orchestration of Specialized Multi-Agents for Cloud Incident Diagnosis**
+- &nbsp; <span class="badge">ICWS '26</span> &nbsp;**Reliable Orchestration of Specialized Multi-Agents for Cloud Incident Diagnosis**
 
   <span style="font-size:14px;"> **Haiyu Huang**, Jiewei Lyu, Shuting Lai, Zhihan Jiang, Pengfei Chen and Michael R. Lyu. </span>
 
